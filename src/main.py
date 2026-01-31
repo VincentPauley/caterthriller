@@ -20,6 +20,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
+
+    brick_row.update(dt)
+
     display_surface.fill("gray")
 
     all_sprites.draw(display_surface)
