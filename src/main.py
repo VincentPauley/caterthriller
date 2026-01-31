@@ -1,6 +1,6 @@
 import pygame
 
-from classes.column import Column
+from classes.brick_row import BrickRow
 from settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
 all_sprites = pygame.sprite.Group()
@@ -11,7 +11,7 @@ display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
-column = Column(all_sprites)
+brick_row = BrickRow(pygame.math.Vector2(30, 100), all_sprites)
 
 running = True
 
@@ -20,7 +20,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    display_surface.fill("limegreen")
+    display_surface.fill("gray")
 
     all_sprites.draw(display_surface)
 
