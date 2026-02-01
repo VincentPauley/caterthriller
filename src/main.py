@@ -35,19 +35,34 @@ for i in range(10):
     column_x_positions.append(i * 64 + 64)
 
 
-class ColumnGroupManager:
+class SingleWallManager:
     def __init__(self, column_sprite_group):
+        self.has_called_next = False
         self.y_pos = -200
-        self.column_speed = 215
+        self.column_speed = 415
         self.column_sprite_group = column_sprite_group
         self.create_group_sprites()
 
-    def update_pos(self, dt):
-        if self.y_pos > WINDOW_HEIGHT + 10:
-            self.y_pos = -200
+    def reset(self):
+        self.y_pos = -200
+        self.has_called_next = False
+        self.column_sprite_group.empty()
+        self.create_group_sprites()
 
-            self.column_sprite_group.empty()
-            self.create_group_sprites()
+    def update_pos(self, dt):
+        # if colum group moves below screen then clear an reset it
+        if self.y_pos > WINDOW_HEIGHT + 10:
+            self.reset()
+
+        # create line to detect when next row should be activated
+        # first find out when that is
+
+        if self.y_pos > WINDOW_HEIGHT / 2 and not self.has_called_next:
+            # create next column group
+            # column_group_2_positions.y_pos = -200
+            # column_group_2_positions.create_group_sprites()
+            self.has_called_next = True
+            print("Call Next Grouping")
 
         self.y_pos = self.y_pos + self.column_speed * dt
 
@@ -60,7 +75,7 @@ class ColumnGroupManager:
                 Column(pygame.math.Vector2(x_pos, self.y_pos), self.column_sprite_group)
 
 
-column_group_1_positions = ColumnGroupManager(column_group_1)
+column_group_1_positions = SingleWallManager(column_group_1)
 
 running = True
 
