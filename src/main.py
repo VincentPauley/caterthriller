@@ -3,6 +3,8 @@ import pygame
 from classes.column import Column
 from settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
+print(WINDOW_WIDTH, WINDOW_HEIGHT)
+
 all_sprites = pygame.sprite.Group()
 
 column_group_1 = pygame.sprite.Group()
@@ -22,10 +24,18 @@ clock = pygame.time.Clock()
 
 brick_rows = []
 
+column_x_positions = []
+
+# these positions are always constant
+for i in range(10):
+    column_x_positions.append(i * 64 + 64)
+
 class ColumnGroupManager:
-    def __init__(self):
+    def __init__(self, column_sprite_group):
         self.y_pos = -200
-        self.column_speed = 115
+        self.column_speed = 215
+        self.column_sprite_group = column_sprite_group
+        self.create_group_sprites()
     
     def update_pos(self, dt):
         if self.y_pos > WINDOW_HEIGHT + 10:
@@ -33,24 +43,15 @@ class ColumnGroupManager:
 
         self.y_pos = self.y_pos + self.column_speed * dt
 
-column_group_1_positions = ColumnGroupManager()
+    def create_group_sprites(self):
+        for x_pos in column_x_positions:
+            Column(pygame.math.Vector2(x_pos, self.y_pos), self.column_sprite_group)
 
-def init_row(x_positions):
-    starting_y = column_group_1_positions.y_pos
-
-    for x_pos in x_positions:
-        Column(pygame.math.Vector2(x_pos, starting_y), column_group_1)
-
-
-column_x_positions = []
-
-
-for i in range(10):
-    column_x_positions.append(i * 64 + 64)
-
-init_row(column_x_positions)
+column_group_1_positions = ColumnGroupManager(column_group_1)
 
 running = True
+
+bg = pygame.image.load("src/graphics/background.png").convert()
 
 while running:
     for event in pygame.event.get():
@@ -59,7 +60,7 @@ while running:
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
-    display_surface.fill("gray")
+    display_surface.blit(bg, (0,0))
 
     column_group_1_positions.update_pos(dt)
 
