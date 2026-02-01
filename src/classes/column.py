@@ -10,10 +10,7 @@ class Column(pygame.sprite.Sprite):
         self.top_left_pos = topLeftPos
         self.rect = self.image.get_rect(topleft=self.top_left_pos)
 
-    # def update(self, y_pos_change):
-    #     self.top_left_pos.y = y_pos_change
-    #     # round y pos for rendering
-    #     self.rect.y = round(self.top_left_pos.y)
-
-    #     if self.top_left_pos.y > WINDOW_HEIGHT + 100:
-    #         self.kill()
+    def update(self, y_pos_change):
+        self.top_left_pos.y = y_pos_change
+        # round y pos for rendering
+        self.rect.y = round(self.top_left_pos.y)
