@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from classes.column import Column
@@ -44,11 +46,18 @@ class ColumnGroupManager:
         if self.y_pos > WINDOW_HEIGHT + 10:
             self.y_pos = -200
 
+            self.column_sprite_group.empty()
+            self.create_group_sprites()
+
         self.y_pos = self.y_pos + self.column_speed * dt
 
     def create_group_sprites(self):
-        for x_pos in column_x_positions:
-            Column(pygame.math.Vector2(x_pos, self.y_pos), self.column_sprite_group)
+        # one block chosen to be missing at random
+        missing_block_index = random.randint(0, 9)
+
+        for index, x_pos in enumerate(column_x_positions):
+            if index != missing_block_index:
+                Column(pygame.math.Vector2(x_pos, self.y_pos), self.column_sprite_group)
 
 
 column_group_1_positions = ColumnGroupManager(column_group_1)
