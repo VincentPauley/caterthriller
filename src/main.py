@@ -11,7 +11,9 @@ column_group_1 = pygame.sprite.Group()
 
 
 pygame.init()
-display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+display_surface = pygame.display.set_mode(
+    (WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SCALED, vsync=1
+)
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
@@ -30,13 +32,14 @@ column_x_positions = []
 for i in range(10):
     column_x_positions.append(i * 64 + 64)
 
+
 class ColumnGroupManager:
     def __init__(self, column_sprite_group):
         self.y_pos = -200
         self.column_speed = 215
         self.column_sprite_group = column_sprite_group
         self.create_group_sprites()
-    
+
     def update_pos(self, dt):
         if self.y_pos > WINDOW_HEIGHT + 10:
             self.y_pos = -200
@@ -46,6 +49,7 @@ class ColumnGroupManager:
     def create_group_sprites(self):
         for x_pos in column_x_positions:
             Column(pygame.math.Vector2(x_pos, self.y_pos), self.column_sprite_group)
+
 
 column_group_1_positions = ColumnGroupManager(column_group_1)
 
@@ -60,7 +64,7 @@ while running:
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
-    display_surface.blit(bg, (0,0))
+    display_surface.blit(bg, (0, 0))
 
     column_group_1_positions.update_pos(dt)
 
