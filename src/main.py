@@ -11,7 +11,22 @@ display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
-brick_row = BrickRow(pygame.math.Vector2(30, 100), all_sprites)
+brick_rows = []
+
+
+def next_row_callback():
+    print("Next row callback triggered")
+    print(len(brick_rows))
+
+    if (len(brick_rows)) < 5:
+        brick_rows.append(
+            BrickRow(pygame.math.Vector2(30, 100), all_sprites, next_row_callback)
+        )
+
+
+brick_rows.append(
+    BrickRow(pygame.math.Vector2(30, 100), all_sprites, next_row_callback)
+)
 
 running = True
 
@@ -22,7 +37,8 @@ while running:
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
-    brick_row.update(dt)
+    for row in brick_rows:
+        row.update(dt)
 
     display_surface.fill("gray")
 
