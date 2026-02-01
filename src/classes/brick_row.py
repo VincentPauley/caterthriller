@@ -6,11 +6,11 @@ column_width = 64
 
 
 class BrickRow:
-    speed = 40
+    speed = 200
 
     callback_triggered = False
 
-    def __init__(self, pos, sprite_group, next_row_callback):
+    def __init__(self, pos, sprite_group, next_row_callback=None):
         self.next_row_callback = next_row_callback
         self.columns = []
 

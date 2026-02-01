@@ -27,19 +27,37 @@ clock = pygame.time.Clock()
 brick_rows = []
 
 
-def next_row_callback():
-    print("Next row callback triggered")
-    print(len(brick_rows))
+# def next_row_callback():
+#     print("Next row callback triggered")
+#     print(len(brick_rows))
 
-    if (len(brick_rows)) < 5:
-        brick_rows.append(
-            BrickRow(pygame.math.Vector2(64, -200), all_sprites, next_row_callback)
-        )
+#     if (len(brick_rows)) < 5:
+#         brick_rows.append(
+#             BrickRow(pygame.math.Vector2(64, -200), all_sprites, next_row_callback)
+#         )
 
 
-brick_rows.append(
-    BrickRow(pygame.math.Vector2(64, -200), all_sprites, next_row_callback)
-)
+# brick_rows.append(
+#     BrickRow(pygame.math.Vector2(64, -200), all_sprites, next_row_callback)
+# )
+
+
+def init_row(x_positions):
+    starting_y = 100
+
+    for x_pos in x_positions:
+        BrickRow(pygame.math.Vector2(x_pos, starting_y), all_sprites)
+
+
+column_x_positions = []
+
+
+for i in range(10):
+    column_x_positions.append(i * 64)
+
+
+print(column_x_positions)
+init_row(column_x_positions)
 
 running = True
 
@@ -50,8 +68,8 @@ while running:
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
-    for row in brick_rows:
-        row.update(dt)
+    # for row in brick_rows:
+    #     row.update(dt)
 
     display_surface.fill("gray")
 
