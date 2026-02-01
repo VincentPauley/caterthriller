@@ -1,6 +1,7 @@
 import pygame
 
 # image for column is 64 width x 128 height
+from settings import WINDOW_HEIGHT
 
 
 class Column(pygame.sprite.Sprite):
@@ -14,3 +15,6 @@ class Column(pygame.sprite.Sprite):
         self.top_left_pos.y = y_pos_change
         # round y pos for rendering
         self.rect.y = round(self.top_left_pos.y)
+
+        if self.top_left_pos.y > WINDOW_HEIGHT + 100:
+            self.kill()

@@ -11,6 +11,19 @@ display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
+# architecture can be way better here.
+
+# have 3 constants that represent all possible brick sets
+# to reset one: determine brick pattern and position to the top of screen, set speed to 0
+#
+# brick_rows: list: [0,1,2]
+
+# brick_row needs to activate the next index, if there is no next index, reset to the first index.
+
+# at one time there can only be 2 visible bricks at once so maintain them as the same.
+
+# could get by with 3 constant defined brick sets, set starting
+
 brick_rows = []
 
 
@@ -20,12 +33,12 @@ def next_row_callback():
 
     if (len(brick_rows)) < 5:
         brick_rows.append(
-            BrickRow(pygame.math.Vector2(30, 100), all_sprites, next_row_callback)
+            BrickRow(pygame.math.Vector2(64, -200), all_sprites, next_row_callback)
         )
 
 
 brick_rows.append(
-    BrickRow(pygame.math.Vector2(30, 100), all_sprites, next_row_callback)
+    BrickRow(pygame.math.Vector2(64, -200), all_sprites, next_row_callback)
 )
 
 running = True

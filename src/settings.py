@@ -1,2 +1,11 @@
-WINDOW_WIDTH = 32 * 32 # 1024 // 16*64
-WINDOW_HEIGHT = 32 * 24 # 768
+WINDOW_WIDTH = (
+    64 * 12
+)  # 768 // 10 tiles of 64, with one tile width of margin on each side
+WINDOW_HEIGHT = 32 * 24  # 768
+
+# > 64 * 10
+# 640
+# > 64 * 2
+# 128
+# > 128 + 640
+# 768

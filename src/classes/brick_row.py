@@ -6,7 +6,7 @@ column_width = 64
 
 
 class BrickRow:
-    speed = 220
+    speed = 40
 
     callback_triggered = False
 
@@ -15,7 +15,7 @@ class BrickRow:
         self.columns = []
 
         for i in range(10):
-            x_pos = pos.x + ((i + 1) * column_width)
+            x_pos = pos.x + (i * column_width)
 
             self.columns.append(Column(pygame.math.Vector2(x_pos, pos.y), sprite_group))
 
