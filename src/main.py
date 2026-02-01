@@ -5,12 +5,7 @@ import pygame
 from classes.column import Column
 from settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
-print(WINDOW_WIDTH, WINDOW_HEIGHT)
-
 all_sprites = pygame.sprite.Group()
-
-column_group_1 = pygame.sprite.Group()
-
 
 pygame.init()
 display_surface = pygame.display.set_mode(
@@ -75,7 +70,18 @@ class SingleWallManager:
                 Column(pygame.math.Vector2(x_pos, self.y_pos), self.column_sprite_group)
 
 
-column_group_1_positions = SingleWallManager(column_group_1)
+class WallManager:
+    def __init__(self):
+        self.group_one_sprites = pygame.sprite.Group()
+        self.group_one_mgmt = SingleWallManager(self.group_one_sprites)
+
+    def update(self, dt):
+        self.group_one_mgmt.update_pos(dt)
+        self.group_one_sprites.update(self.group_one_mgmt.y_pos)
+        self.group_one_sprites.draw(display_surface)
+
+
+wall_manager = WallManager()
 
 running = True
 
@@ -90,10 +96,7 @@ while running:
 
     display_surface.blit(bg, (0, 0))
 
-    column_group_1_positions.update_pos(dt)
-
-    column_group_1.update(column_group_1_positions.y_pos)
-    column_group_1.draw(display_surface)
+    wall_manager.update(dt)
 
     pygame.display.flip()
 
