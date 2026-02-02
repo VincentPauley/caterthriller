@@ -14,13 +14,6 @@ display_surface = pygame.display.set_mode(
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
-# architecture can be way better here.
-
-# have 3 constants that represent all possible brick sets
-# to reset one: determine brick pattern and position to the top of screen, set speed to 0
-#
-# brick_rows: list: [0,1,2]
-
 brick_rows = []
 
 column_x_positions = []
@@ -83,29 +76,21 @@ class WallManager:
     def __init__(self):
         self.walls = []
 
+        # NOTE: at the moment this is an array to future proof in case more walls are needed
+        # if it truly only ever needs 2 this could be refactored to allow for faster and simpler
+        # calculations
         for i in range(2):
             # first wall is the only active
             active = i < 1
             self.walls.append(SingleWallManager(i, active, self.demarcation_callback)) 
 
         # current wall that has potential to hit the player (needs collisions)
-        self.active_wall_index = 0
+        # self.active_wall_index = 0
 
     def demarcation_callback(self, caller_index):
         # Activate the next wall, wrapping around to 0 if at the end
         next_index = (caller_index + 1) % len(self.walls)
         self.walls[next_index].active = True
-
-
-
-        # multiple groups need be drawn at the same time, so it's not really
-        # about one being active. At the line of demarcation where the wall hits 
-        # the edge of the ledge, it can no longer affect the player and
-
-        # get next index wall and get it going.
-
-        # once the wall goes off screen it can reset itself and become inactive,
-        # then when a wall passes line of demarcation it knows to set the next index active.
 
     def update(self, dt):
         for wall in self.walls:
