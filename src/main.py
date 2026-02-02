@@ -31,12 +31,16 @@ for i in range(10):
 
 
 class SingleWallManager:
-    def __init__(self, column_sprite_group):
+    def __init__(self):
         self.has_called_next = False
         self.y_pos = -200
         self.column_speed = 415
         self.column_sprite_group = pygame.sprite.Group()
         self.create_group_sprites()
+
+    def update(self, dt):
+        self.update_pos(dt)
+        self.column_sprite_group.update(self.y_pos)
 
     def draw(self):
         self.column_sprite_group.draw(display_surface)
@@ -75,13 +79,10 @@ class SingleWallManager:
 
 class WallManager:
     def __init__(self):
-        # can you have the SingleWallManager maintain it's own sprites?
-        self.group_one_sprites = pygame.sprite.Group()
-        self.group_one_mgmt = SingleWallManager(self.group_one_sprites)
+        self.group_one_mgmt = SingleWallManager()
 
     def update(self, dt):
-        self.group_one_mgmt.update_pos(dt)
-        self.group_one_sprites.update(self.group_one_mgmt.y_pos)
+        self.group_one_mgmt.update(dt)
         self.group_one_mgmt.draw()
 
 
