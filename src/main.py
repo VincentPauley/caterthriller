@@ -31,7 +31,10 @@ for i in range(10):
 
 
 class SingleWallManager:
-    def __init__(self):
+    def __init__(self, index, active, demarcation_callback):
+        self.wall_index = index
+        self.active = active
+        self.demarcation_callback = demarcation_callback
         self.has_called_next = False
         self.y_pos = -200
         self.column_speed = 415
@@ -46,6 +49,7 @@ class SingleWallManager:
         self.column_sprite_group.draw(display_surface)
 
     def reset(self):
+        self.active = False
         self.y_pos = -200
         self.has_called_next = False
         self.column_sprite_group.empty()
@@ -61,10 +65,8 @@ class SingleWallManager:
 
         if self.y_pos > WINDOW_HEIGHT / 2 and not self.has_called_next:
             # create next column group
-            # column_group_2_positions.y_pos = -200
-            # column_group_2_positions.create_group_sprites()
             self.has_called_next = True
-            print("Call Next Grouping")
+            self.demarcation_callback(self.wall_index)
 
         self.y_pos = self.y_pos + self.column_speed * dt
 
@@ -79,11 +81,37 @@ class SingleWallManager:
 
 class WallManager:
     def __init__(self):
-        self.group_one_mgmt = SingleWallManager()
+        self.walls = []
+
+        for i in range(2):
+            # first wall is the only active
+            active = i < 1
+            self.walls.append(SingleWallManager(i, active, self.demarcation_callback)) 
+
+        # current wall that has potential to hit the player (needs collisions)
+        self.active_wall_index = 0
+
+    def demarcation_callback(self, caller_index):
+        # Activate the next wall, wrapping around to 0 if at the end
+        next_index = (caller_index + 1) % len(self.walls)
+        self.walls[next_index].active = True
+
+
+
+        # multiple groups need be drawn at the same time, so it's not really
+        # about one being active. At the line of demarcation where the wall hits 
+        # the edge of the ledge, it can no longer affect the player and
+
+        # get next index wall and get it going.
+
+        # once the wall goes off screen it can reset itself and become inactive,
+        # then when a wall passes line of demarcation it knows to set the next index active.
 
     def update(self, dt):
-        self.group_one_mgmt.update(dt)
-        self.group_one_mgmt.draw()
+        for wall in self.walls:
+            if wall.active:
+                wall.update(dt)
+                wall.draw()
 
 
 wall_manager = WallManager()
