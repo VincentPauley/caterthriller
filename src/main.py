@@ -4,6 +4,9 @@ from classes.lane_settings import LaneSettings
 from classes.wall_management import WallManagement
 from classes.place_marker import PlaceMarker
 from classes.player import Player
+from classes.single_brick import SingleBrick
+from classes.single_wall import SingleWall
+
 from settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
 
@@ -32,6 +35,12 @@ lane_settings = LaneSettings()
 # for x_pos in lane_settings.get_lane_center_x_positions():
 #     PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
 
+all_bricks = pygame.sprite.Group()
+
+
+first_wall = SingleWall(all_bricks)
+
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -42,11 +51,13 @@ while running:
     display_surface.blit(bg, (0, 0))
 
     # wall manager returns sprites that player should check for collisions
-    collision_walls = wall_manager.update(dt)
+    # collision_walls = wall_manager.update(dt)
+    collision_walls=[]
 
     player_sprites.update(dt, collision_walls)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
+    all_bricks.draw(display_surface)
 
     pygame.display.flip()
 

@@ -123,7 +123,8 @@ class Player(pygame.sprite.Sprite):
     def update(self, dt, collision_groups):
         self.input(dt)
         self.move(dt)
- 
-        for brick in collision_groups.sprites():
-            if brick.rect.colliderect(self.rect):
-                brick.kill()
+
+        if len(collision_groups) > 0:
+            for brick in collision_groups.sprites():
+                if brick.rect.colliderect(self.rect):
+                    brick.kill()
