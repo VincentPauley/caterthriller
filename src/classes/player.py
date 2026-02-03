@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.acceleration = 4000  # pixels per second squared
         self.friction = 3000  # deceleration when no input
         self.player_spots = lane_settings.get_lane_center_x_positions()
+        self.overshoot_correction = .3
 
         # Track Last Direction Moving
         self.last_direction_left = False
@@ -26,29 +27,40 @@ class Player(pygame.sprite.Sprite):
         self.idle_triggered = False
 
     def on_idle(self):
-        if (self.last_direction_left):
-            # iterate the list backwards until you find the first number less than x
-            for index, spot_x in reversed(list(enumerate(self.player_spots))):
-                if spot_x < self.pos.x:
-                    self.pos.x = spot_x
-                    break
-
-        elif (self.last_direction_right):
-            # iterate the list positively until you find the first number greater than x
-            for index, spot_x in enumerate(self.player_spots):
-                if spot_x > self.pos.x:
-                    self.pos.x = spot_x
-                    break
-
-
-
-
-        else:
-            print('no direction!')
-
-
-        # print("Player has been idle for 2 seconds!")
-        # Add your custom logic here
+        # Find the closest spot to the left and right of current position
+        previous_spot = None
+        next_spot = None
+        
+        # Find previous spot (closest one less than current x)
+        for spot_x in reversed(self.player_spots):
+            if spot_x < self.pos.x:
+                previous_spot = spot_x
+                break
+        
+        # Find next spot (closest one greater than current x)
+        for spot_x in self.player_spots:
+            if spot_x > self.pos.x:
+                next_spot = spot_x
+                break
+        
+        # If we have both spots, calculate percentage and snap based on thresholds
+        if previous_spot is not None and next_spot is not None:
+            distance = next_spot - previous_spot
+            current_offset = self.pos.x - previous_spot
+            percentage = current_offset / distance
+            
+            if percentage >= 1 - self.overshoot_correction:
+                
+                self.pos.x = next_spot
+            elif percentage <= self.overshoot_correction:
+                self.pos.x = previous_spot
+            # else: do nothing, player is in the middle 50% range
+        elif next_spot is not None:
+            # Only next spot exists, snap to it
+            self.pos.x = next_spot
+        elif previous_spot is not None:
+            # Only previous spot exists, snap to it
+            self.pos.x = previous_spot
 
     def move(self, dt):
         # Apply velocity to position
