@@ -17,8 +17,10 @@ clock = pygame.time.Clock()
 place_markers = pygame.sprite.Group()
 player_sprites = pygame.sprite.Group()
 
+player_y_pos = 500
+
 wall_manager = WallManagement(display_surface)
-player = Player(player_sprites, pygame.math.Vector2(400, 500))
+player = Player(player_sprites, pygame.math.Vector2(400, player_y_pos))
 
 running = True
 
@@ -26,9 +28,9 @@ bg = pygame.image.load("src/graphics/background.png").convert()
 
 lane_settings = LaneSettings()
 
-# show player spots
-for x_pos in lane_settings.get_lane_center_x_positions():
-    PlaceMarker(pygame.math.Vector2(x_pos, 500), place_markers)
+# show player spots (for debug)
+# for x_pos in lane_settings.get_lane_center_x_positions():
+#     PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
 
 while running:
     for event in pygame.event.get():
@@ -39,8 +41,10 @@ while running:
 
     display_surface.blit(bg, (0, 0))
 
-    wall_manager.update(dt)
-    player_sprites.update(dt)
+    # wall manager returns sprites that player should check for collisions
+    collision_walls = wall_manager.update(dt)
+
+    player_sprites.update(dt, collision_walls)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
 

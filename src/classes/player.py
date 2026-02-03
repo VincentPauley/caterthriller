@@ -4,6 +4,12 @@ from classes.lane_settings import LaneSettings
 
 lane_settings = LaneSettings()
 
+# TODO LIST
+#  
+# [ ] - dash mechanic (big swings are too much to reach now)
+# [ ] - edge needs to be handled. either insta kill or bounce player off the wall (prob later is more fun)
+        # potential dash into wall causes a jump 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups, pos):
         super().__init__(groups)
@@ -114,6 +120,10 @@ class Player(pygame.sprite.Sprite):
             
             self.apply_snap_deceleration(dt)
         
-    def update(self, dt):
+    def update(self, dt, collision_groups):
         self.input(dt)
         self.move(dt)
+ 
+        for brick in collision_groups.sprites():
+            if brick.rect.colliderect(self.rect):
+                brick.kill()

@@ -41,6 +41,8 @@ class SingleWallManager:
         # create line to detect when next row should be activated
         # first find out when that is
 
+        # demarcation line needs to be set by the player, and likely will need to be able
+        # to change based on player position.
         if self.y_pos > WINDOW_HEIGHT / 2 and not self.has_called_next:
             # create next column group
             self.has_called_next = True
@@ -79,8 +81,16 @@ class WallManagement:
         self.walls[next_index].active = True
 
     def update(self, dt):
-        # print('update')
+        collision_groups = None
+
         for wall in self.walls:
             if wall.active:
                 wall.update(dt)
                 wall.draw()
+
+                # this is hard-coded right now to only check collisions with the right group
+                # should be set to use player position
+                if wall.y_pos < 500:
+                    collision_groups = wall.column_sprite_group
+
+        return collision_groups
