@@ -16,56 +16,99 @@ class Player(pygame.sprite.Sprite):
         self.friction = 3000  # deceleration when no input
         self.player_spots = lane_settings.get_lane_center_x_positions()
         self.overshoot_correction = .3
+        
+        # Target position for smooth snapping
+        self.target_x = None
 
-        # Track Last Direction Moving
-        self.last_direction_left = False
-        self.last_direction_right = False
+    def calculate_target_spot(self):
+        """Determine which spot to snap to based on velocity and position"""
+        if abs(self.velocity.x) < 0.1:
+            return None
         
-        # Idle detection
-        self.idle_timer = 0
-        self.idle_threshold = .25  # seconds
-        self.idle_triggered = False
-
-    def on_idle(self):
-        # Find the closest spot to the left and right of current position
-        previous_spot = None
-        next_spot = None
+        moving_right = self.velocity.x > 0
         
-        # Find previous spot (closest one less than current x)
-        for spot_x in reversed(self.player_spots):
-            if spot_x < self.pos.x:
-                previous_spot = spot_x
-                break
-        
-        # Find next spot (closest one greater than current x)
-        for spot_x in self.player_spots:
-            if spot_x > self.pos.x:
-                next_spot = spot_x
-                break
-        
-        # If we have both spots, calculate percentage and snap based on thresholds
-        if previous_spot is not None and next_spot is not None:
-            distance = next_spot - previous_spot
-            current_offset = self.pos.x - previous_spot
-            percentage = current_offset / distance
+        if moving_right:
+            # Find next spots ahead
+            next_spots = [spot for spot in self.player_spots if spot > self.pos.x]
+            if not next_spots:
+                return None
             
-            if percentage >= 1 - self.overshoot_correction:
+            next_spots.sort()  # Ensure sorted ascending
+            immediate_next = next_spots[0]
+            
+            # Check if we should skip to the spot after
+            distance_to_immediate = immediate_next - self.pos.x
+            
+            # If we have a second spot and conditions warrant skipping
+            if len(next_spots) > 1:
+                second_next = next_spots[1]
                 
-                self.pos.x = next_spot
-            elif percentage <= self.overshoot_correction:
-                self.pos.x = previous_spot
-            # else: do nothing, player is in the middle 50% range
-        elif next_spot is not None:
-            # Only next spot exists, snap to it
-            self.pos.x = next_spot
-        elif previous_spot is not None:
-            # Only previous spot exists, snap to it
-            self.pos.x = previous_spot
+                # Skip if: too fast OR too close to immediate next
+                # Using a threshold: if distance < 20px OR velocity > 400
+                if distance_to_immediate < 20 or abs(self.velocity.x) > 400:
+                    return second_next
+            
+            return immediate_next
+            
+        else:  # moving left
+            # Find next spots behind
+            prev_spots = [spot for spot in self.player_spots if spot < self.pos.x]
+            if not prev_spots:
+                return None
+            
+            prev_spots.sort(reverse=True)  # Ensure sorted descending
+            immediate_prev = prev_spots[0]
+            
+            # Check if we should skip to the spot before
+            distance_to_immediate = self.pos.x - immediate_prev
+            
+            # If we have a second spot and conditions warrant skipping
+            if len(prev_spots) > 1:
+                second_prev = prev_spots[1]
+                
+                # Skip if: too fast OR too close to immediate previous
+                if distance_to_immediate < 20 or abs(self.velocity.x) > 400:
+                    return second_prev
+            
+            return immediate_prev
 
     def move(self, dt):
         # Apply velocity to position
         self.pos.x += self.velocity.x * dt
         self.rect.centerx = int(self.pos.x)
+
+    def apply_snap_deceleration(self, dt):
+        """Apply calculated friction to smoothly decelerate to target position"""
+        if self.target_x is None:
+            return
+        
+        distance_to_target = self.target_x - self.pos.x
+        
+        # If we're very close to target, snap and stop
+        if abs(distance_to_target) < 1:
+            self.pos.x = self.target_x
+            self.velocity.x = 0
+            self.target_x = None
+            return
+        
+        # Calculate required deceleration to stop at target
+        # Using physics: v² = v₀² + 2ad, solving for a when v = 0
+        if abs(self.velocity.x) > 0.1:
+            # Deceleration needed = v² / (2 * distance)
+            required_decel = (self.velocity.x * self.velocity.x) / (2 * abs(distance_to_target))
+            
+            # Apply friction in the opposite direction of velocity
+            if self.velocity.x > 0:
+                self.velocity.x -= min(required_decel, self.friction) * dt
+                if self.velocity.x < 0:
+                    self.velocity.x = 0
+            elif self.velocity.x < 0:
+                self.velocity.x += min(required_decel, self.friction) * dt
+                if self.velocity.x > 0:
+                    self.velocity.x = 0
+        else:
+            # Velocity too low, just stop
+            self.velocity.x = 0
 
     def input(self, dt):
         keys = pygame.key.get_pressed()
@@ -75,43 +118,24 @@ class Player(pygame.sprite.Sprite):
             self.velocity.x += self.acceleration * dt
             if self.velocity.x > self.max_speed:
                 self.velocity.x = self.max_speed
-
-            # track last direction
-            self.last_direction_left = False
-            self.last_direction_right = True
-            # Reset idle timer on input
-            self.idle_timer = 0
-            self.idle_triggered = False
+            
+            # Clear target when actively moving
+            self.target_x = None
         elif keys[pygame.K_LEFT]:
             # Accelerate left
             self.velocity.x -= self.acceleration * dt
             if self.velocity.x < -self.max_speed:
                 self.velocity.x = -self.max_speed
-            # track last direction
-            self.last_direction_left = True
-            self.last_direction_right = False
-            # Reset idle timer on input
-            self.idle_timer = 0
-            self.idle_triggered = False
+            
+            # Clear target when actively moving
+            self.target_x = None
         else:
-            # Apply friction when no input
-            if self.velocity.x > 0:
-                self.velocity.x -= self.friction * dt
-                if self.velocity.x < 0:
-                    self.velocity.x = 0
-            elif self.velocity.x < 0:
-                self.velocity.x += self.friction * dt
-                if self.velocity.x > 0:
-                    self.velocity.x = 0
+            # Keys released - calculate target and apply snap deceleration
+            if self.target_x is None and abs(self.velocity.x) > 0.1:
+                self.target_x = self.calculate_target_spot()
+            
+            self.apply_snap_deceleration(dt)
         
     def update(self, dt):
         self.input(dt)
         self.move(dt)
-        
-        # Track idle time
-        keys = pygame.key.get_pressed()
-        if not (keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]):
-            self.idle_timer += dt
-            if self.idle_timer >= self.idle_threshold and not self.idle_triggered:
-                self.idle_triggered = True
-                self.on_idle()
