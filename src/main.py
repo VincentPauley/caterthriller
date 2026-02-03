@@ -1,8 +1,6 @@
-import random
-
 import pygame
 
-from classes.column import Column
+from classes.lane_settings import LaneSettings
 from classes.wall_management import WallManagement
 from classes.player import Player
 from settings import WINDOW_HEIGHT, WINDOW_WIDTH
@@ -24,6 +22,8 @@ player = Player(player_sprites, pygame.math.Vector2(400, 500))
 running = True
 
 bg = pygame.image.load("src/graphics/background.png").convert()
+
+lane_settings = LaneSettings()
 
 while running:
     for event in pygame.event.get():

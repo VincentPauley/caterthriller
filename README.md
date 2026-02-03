@@ -50,6 +50,8 @@ When you're done working, deactivate the virtual environment:
 deactivate
 ```
 
-## Graphic Sizes
+## Movement
 
-8 16 32 64 128 256
+Precise and nimble movement is a huge requirement of the game.  Right now side to side accel is in place but want to adjust
+so that once fingers are off the keyes for .2 seconds (or whatever) that the player is "shifted" to the center of the lane
+that they are moving toward (or closest to etc) - gonna need a bit of tuning and tweaking.

@@ -3,14 +3,9 @@ import random
 
 from settings import WINDOW_HEIGHT
 from classes.column import Column
+from classes.lane_settings import LaneSettings
 
-brick_rows = []
-column_x_positions = []
-
-# these positions are always constant
-for i in range(10):
-    column_x_positions.append(i * 64 + 64)
-
+lane_settings = LaneSettings()
 
 class SingleWallManager:
     def __init__(self, display_surface, index, active, demarcation_callback):
@@ -57,7 +52,7 @@ class SingleWallManager:
         # one block chosen to be missing at random
         missing_block_index = random.randint(0, 9)
 
-        for index, x_pos in enumerate(column_x_positions):
+        for index, x_pos in enumerate(lane_settings.get_lane_x_positions()):
             if index != missing_block_index:
                 Column(pygame.math.Vector2(x_pos, self.y_pos), self.column_sprite_group)
 
