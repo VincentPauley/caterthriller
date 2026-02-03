@@ -1,5 +1,8 @@
 import pygame
 
+from classes.lane_settings import LaneSettings
+
+lane_settings = LaneSettings()
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups, pos):
@@ -11,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.max_speed = 600
         self.acceleration = 4000  # pixels per second squared
         self.friction = 3000  # deceleration when no input
+        self.player_spots = lane_settings.get_lane_center_x_positions()
 
         # Track Last Direction Moving
         self.last_direction_left = False
@@ -18,16 +22,27 @@ class Player(pygame.sprite.Sprite):
         
         # Idle detection
         self.idle_timer = 0
-        self.idle_threshold = 2.0  # seconds
+        self.idle_threshold = .25  # seconds
         self.idle_triggered = False
 
     def on_idle(self):
-        """Called once when player has been idle for 2 seconds"""
         if (self.last_direction_left):
-            print("last move was LEFT!")
+            # iterate the list backwards until you find the first number less than x
+            for index, spot_x in reversed(list(enumerate(self.player_spots))):
+                if spot_x < self.pos.x:
+                    self.pos.x = spot_x
+                    break
 
         elif (self.last_direction_right):
-            print("last direction was RIGHT!")
+            # iterate the list positively until you find the first number greater than x
+            for index, spot_x in enumerate(self.player_spots):
+                if spot_x > self.pos.x:
+                    self.pos.x = spot_x
+                    break
+
+
+
+
         else:
             print('no direction!')
 
