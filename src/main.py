@@ -40,6 +40,11 @@ all_bricks = pygame.sprite.Group()
 
 first_wall = SingleWall(all_bricks)
 
+# ok need to make a more dynamic way rahter than hard-coding, also don't want to 
+# clear the sprites from all bricks so might need separate group rather than this...
+
+# all bricks can be used for draw but probably need a local sprite group to handle specific
+# deletes
 
 while running:
     for event in pygame.event.get():
@@ -57,7 +62,13 @@ while running:
     player_sprites.update(dt, collision_walls)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
-    all_bricks.draw(display_surface)
+    
+    # Update wall and remove if it goes off screen
+    if first_wall and not first_wall.update(dt):
+        first_wall = None  # Remove the wall instance
+    
+    if first_wall:
+        all_bricks.draw(display_surface)
 
     pygame.display.flip()
 
