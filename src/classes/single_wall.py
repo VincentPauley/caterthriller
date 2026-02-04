@@ -15,7 +15,8 @@ from settings import WINDOW_HEIGHT
 lane_settings = LaneSettings()
 
 class SingleWall:
-    def __init__(self, shared_sprite_group):
+    def __init__(self, shared_sprite_group: pygame.sprite.Group, active: bool):
+        self.active = active
         # sprite groups
         self.shared_sprite_group = shared_sprite_group
         self.internal_sprite_group = pygame.sprite.Group()
@@ -24,14 +25,17 @@ class SingleWall:
         self.speed = 300
         self.center_y_pos = 0
 
+        self.demarcation_line = 450
+        self.demarcation_emitted = False
+
         # sprite groups are passed in from the caller.
         self.reset_bricks()
 
     def reset_bricks(self):
         # each iteration the wall is re-built with new empties and potentially
         # more differentiation.  this creates a clean wall from scratch.
-
         self.center_y_pos = 0
+        self.demarcation_emitted = False
 
         for entry in enumerate(self.lane_center_x_positions):
             index = entry[0] # < will be needed later to make some bricks missing
@@ -40,6 +44,14 @@ class SingleWall:
             SingleBrick(pygame.math.Vector2(x_pos, self.center_y_pos), [self.shared_sprite_group, self.internal_sprite_group])
 
     def update(self, dt):
+        if not self.active:
+            return
+        
+        if not self.demarcation_emitted and self.center_y_pos > self.demarcation_line:
+            print('Need to emit demarcation signal!')
+            self.demarcation_emitted = True
+
+
         # Check if wall has moved off screen
         if self.center_y_pos > WINDOW_HEIGHT:
             # Remove all sprites from ALL groups they belong to

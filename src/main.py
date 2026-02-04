@@ -38,7 +38,7 @@ lane_settings = LaneSettings()
 all_bricks = pygame.sprite.Group()
 
 
-first_wall = SingleWall(all_bricks)
+wall_a = SingleWall(all_bricks, True)
 
 # only 2 walls, wall A and wall B.
 # walls can handle reseting the sprites and their position
@@ -63,13 +63,8 @@ while running:
 
     display_surface.blit(bg, (0, 0))
 
-    # wall manager returns sprites that player should check for collisions
-    # collision_walls = wall_manager.update(dt)
-    collision_walls=[]
+    wall_a.update(dt)
 
-    first_wall.update(dt)
-
-    
     all_bricks.draw(display_surface)
 
 
