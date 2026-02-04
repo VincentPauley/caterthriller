@@ -1,21 +1,27 @@
 import pygame
 
-from classes.lane_settings import LaneSettings
+from classes.lane_settings import lane_settings
 from classes.walls.single_brick import SingleBrick
 from settings import WINDOW_HEIGHT
 
-lane_settings = LaneSettings()
+wall_initial_y = (
+    -64
+)  # < half the vert of a column (pos right at the top of the screen edge)
 
-wall_initial_y = -64 # < half the vert of a column (pos right at the top of the screen edge)
 
 class SingleWall:
-    def __init__(self, shared_sprite_group: pygame.sprite.Group, active: bool, demarcation_callback):
+    def __init__(
+        self,
+        shared_sprite_group: pygame.sprite.Group,
+        active: bool,
+        demarcation_callback,
+    ):
         self.active = active
         # sprite groups
         self.shared_sprite_group = shared_sprite_group
         self.internal_sprite_group = pygame.sprite.Group()
 
-        self.lane_center_x_positions = lane_settings.get_lane_center_x_positions()
+        self.lane_center_x_positions = lane_settings.center_x_positions
         self.speed = 300
         self.center_y_pos = wall_initial_y
 
@@ -33,19 +39,21 @@ class SingleWall:
         self.demarcation_emitted = False
 
         for entry in enumerate(self.lane_center_x_positions):
-            index = entry[0] # < will be needed later to make some bricks missing
+            index = entry[0]  # < will be needed later to make some bricks missing
             x_pos = entry[1]
 
-            SingleBrick(pygame.math.Vector2(x_pos, self.center_y_pos), [self.shared_sprite_group, self.internal_sprite_group])
+            SingleBrick(
+                pygame.math.Vector2(x_pos, self.center_y_pos),
+                [self.shared_sprite_group, self.internal_sprite_group],
+            )
 
     def update(self, dt):
         if not self.active:
             return
-        
+
         if not self.demarcation_emitted and self.center_y_pos > self.demarcation_line:
             self.demarcation_callback()
             self.demarcation_emitted = True
-
 
         # Check if wall has moved off screen
         if self.center_y_pos > WINDOW_HEIGHT:
@@ -59,5 +67,3 @@ class SingleWall:
         else:
             self.center_y_pos += self.speed * dt
             self.internal_sprite_group.update(self.center_y_pos)
-
-

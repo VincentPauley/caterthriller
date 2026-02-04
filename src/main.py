@@ -1,12 +1,8 @@
 import pygame
 
-from classes.lane_settings import LaneSettings
-from classes.place_marker import PlaceMarker
 from classes.player import Player
 from classes.walls.index import WallManager
-
 from settings import WINDOW_HEIGHT, WINDOW_WIDTH
-
 
 pygame.init()
 display_surface = pygame.display.set_mode(
@@ -30,10 +26,9 @@ running = True
 
 bg = pygame.image.load("src/graphics/background.png").convert()
 
-lane_settings = LaneSettings()
 
 # show player spots (for debug)
-# for x_pos in lane_settings.get_lane_center_x_positions():
+# for x_pos in lane_settings.center_x_positions:
 #     PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
 
 while running:
@@ -51,7 +46,7 @@ while running:
     all_brick_sprites.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
-    
+
     pygame.display.flip()
 
 pygame.quit()
