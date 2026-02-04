@@ -15,36 +15,42 @@ from settings import WINDOW_HEIGHT
 lane_settings = LaneSettings()
 
 class SingleWall:
-    def __init__(self, sprite_groups):
-        self.sprite_groups = sprite_groups
+    def __init__(self, shared_sprite_group):
+        # sprite groups
+        self.shared_sprite_group = shared_sprite_group
+        self.internal_sprite_group = pygame.sprite.Group()
+
         self.lane_center_x_positions = lane_settings.get_lane_center_x_positions()
         self.speed = 300
         self.center_y_pos = 0
 
         # sprite groups are passed in from the caller.
         self.reset_bricks()
-        
 
     def reset_bricks(self):
         # each iteration the wall is re-built with new empties and potentially
         # more differentiation.  this creates a clean wall from scratch.
 
+        self.center_y_pos = 0
+
         for entry in enumerate(self.lane_center_x_positions):
             index = entry[0] # < will be needed later to make some bricks missing
             x_pos = entry[1]
 
-            SingleBrick(pygame.math.Vector2(x_pos, self.center_y_pos), self.sprite_groups)
+            SingleBrick(pygame.math.Vector2(x_pos, self.center_y_pos), [self.shared_sprite_group, self.internal_sprite_group])
 
     def update(self, dt):
         # Check if wall has moved off screen
         if self.center_y_pos > WINDOW_HEIGHT:
-            # Remove all sprites from the group
-            self.sprite_groups.empty()
-            return False  # Signal that wall should be removed
-        
-        self.center_y_pos += self.speed * dt
-        self.sprite_groups.update(self.center_y_pos)
-        return True  # Wall is still active
+            # Remove all sprites from ALL groups they belong to
+            for sprite in self.internal_sprite_group:
+                sprite.kill()
+
+            self.reset_bricks()
+
+        else:
+            self.center_y_pos += self.speed * dt
+            self.internal_sprite_group.update(self.center_y_pos)
 
         # this guy should know to reset itself and doesn't need outside involvement to remove
         # itself from the group.  Should detect when it is off-screen and either remove itself

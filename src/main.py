@@ -40,6 +40,14 @@ all_bricks = pygame.sprite.Group()
 
 first_wall = SingleWall(all_bricks)
 
+# only 2 walls, wall A and wall B.
+# walls can handle reseting the sprites and their position
+# each wall has a demarcation line that will emit a signal back here to activate the other wall
+# each wall gets a group sprite all_bricks, and attaches it's own group to the sprite as well,
+# empty the internal sprite group on reset and see how it works, hopefully can then just pass the
+# all_bricks sprite to the group.  There will be a brief period where you're checking collisions
+# that aren't possible but it should be a brief and simple sacrifice.
+
 # ok need to make a more dynamic way rahter than hard-coding, also don't want to 
 # clear the sprites from all bricks so might need separate group rather than this...
 
@@ -59,17 +67,16 @@ while running:
     # collision_walls = wall_manager.update(dt)
     collision_walls=[]
 
-    player_sprites.update(dt, collision_walls)
+    first_wall.update(dt)
+
+    
+    all_bricks.draw(display_surface)
+
+
+    player_sprites.update(dt, all_bricks)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
     
-    # Update wall and remove if it goes off screen
-    if first_wall and not first_wall.update(dt):
-        first_wall = None  # Remove the wall instance
-    
-    if first_wall:
-        all_bricks.draw(display_surface)
-
     pygame.display.flip()
 
 pygame.quit()
