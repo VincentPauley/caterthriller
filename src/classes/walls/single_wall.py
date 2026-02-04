@@ -1,7 +1,7 @@
 import pygame
 
 from classes.lane_settings import LaneSettings
-from classes.single_brick import SingleBrick
+from classes.walls.single_brick import SingleBrick
 from settings import WINDOW_HEIGHT
 
 lane_settings = LaneSettings()

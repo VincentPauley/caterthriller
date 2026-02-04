@@ -39,9 +39,9 @@ python3 -m venv .venv
 pip install pygame
 ```
 
-5. Run the game:
+5. Run the game (from root directory):
 ```bash
-python main.py
+python src/main.py
 ```
 
 ### Deactivating the Virtual Environment
