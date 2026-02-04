@@ -1,11 +1,3 @@
-# this guy needs to receive a single sprite group and calculate the positioning
-# of the wall for next frame.  The update method of single_wall should be where
-# this is received, calculation happens once and then passed down.  This is not
-# itself a sprite class, rather just for data mgmt.
-
-
-# a wall is made of bricks
-# get the lane settings from global helper.
 import pygame
 
 from classes.lane_settings import LaneSettings
@@ -57,6 +49,7 @@ class SingleWall:
 
         # Check if wall has moved off screen
         if self.center_y_pos > WINDOW_HEIGHT:
+            self.active = False
             # Remove all sprites from ALL groups they belong to
             for sprite in self.internal_sprite_group:
                 sprite.kill()
@@ -67,14 +60,4 @@ class SingleWall:
             self.center_y_pos += self.speed * dt
             self.internal_sprite_group.update(self.center_y_pos)
 
-        # this guy should know to reset itself and doesn't need outside involvement to remove
-        # itself from the group.  Should detect when it is off-screen and either remove itself
-        # or reset to the top, leaning toward just removing itself. not sure if there is any benefit
-        # to keeping the class around...
-
-        # the sprite group should not be created here as it needs to be known about elsewhere right?
-        # really this should be.
-
-        # honestly just a simple timer might suffice for this and it would be fairly intuitive to 
-        # change, might not need a line of demarcation at all.
 

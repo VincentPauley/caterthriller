@@ -37,35 +37,14 @@ lane_settings = LaneSettings()
 
 all_bricks = pygame.sprite.Group()
 
-
-
 wall_a = SingleWall(all_bricks, True, lambda: receive_wall_demarcation_hit("A"))
 wall_b = SingleWall(all_bricks, False, lambda: receive_wall_demarcation_hit("B"))
 
 def receive_wall_demarcation_hit(id):
-    print('demarc received: ', id)
     if id == 'A':
         wall_b.active = True
     if id == 'B':
         wall_a.active = True
-
-    
-
-    # print(f'demarc received from: {id}')
-
-# only 2 walls, wall A and wall B.
-# walls can handle reseting the sprites and their position
-# each wall has a demarcation line that will emit a signal back here to activate the other wall
-# each wall gets a group sprite all_bricks, and attaches it's own group to the sprite as well,
-# empty the internal sprite group on reset and see how it works, hopefully can then just pass the
-# all_bricks sprite to the group.  There will be a brief period where you're checking collisions
-# that aren't possible but it should be a brief and simple sacrifice.
-
-# ok need to make a more dynamic way rahter than hard-coding, also don't want to 
-# clear the sprites from all bricks so might need separate group rather than this...
-
-# all bricks can be used for draw but probably need a local sprite group to handle specific
-# deletes
 
 while running:
     for event in pygame.event.get():
