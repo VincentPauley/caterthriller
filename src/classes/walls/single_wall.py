@@ -3,10 +3,6 @@ import pygame
 from classes.walls.single_brick import SingleBrick
 from settings import settings
 
-wall_initial_y = (
-    -64
-)  # < half the vert of a column (pos right at the top of the screen edge)
-
 
 class SingleWall:
     def __init__(
@@ -21,10 +17,10 @@ class SingleWall:
         self.internal_sprite_group = pygame.sprite.Group()
 
         self.lane_center_x_positions = settings.game.lanes.center_x_positions
-        self.speed = 300
-        self.center_y_pos = wall_initial_y
+        self.speed = settings.game.walls.speed
+        self.center_y_pos = settings.game.walls.initial_y_pos
 
-        self.demarcation_line = 450
+        self.demarcation_line = settings.game.walls.demarcation_line
         self.demarcation_emitted = False
         self.demarcation_callback = demarcation_callback
 
@@ -34,7 +30,7 @@ class SingleWall:
     def reset_bricks(self):
         # each iteration the wall is re-built with new empties and potentially
         # more differentiation.  this creates a clean wall from scratch.
-        self.center_y_pos = wall_initial_y
+        self.center_y_pos = settings.game.walls.initial_y_pos
         self.demarcation_emitted = False
 
         for entry in enumerate(self.lane_center_x_positions):

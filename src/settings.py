@@ -11,9 +11,9 @@ class Lanes:
         self.single_lane_width = 64
         self.count = 10
         self.center_x_positions = []
-        self.get_lane_center_x_positions()
+        self._get_lane_center_x_positions()
 
-    def get_lane_center_x_positions(self):
+    def _get_lane_center_x_positions(self):
         for i in range(self.count):
             self.center_x_positions.append(
                 i * self.single_lane_width
@@ -22,9 +22,18 @@ class Lanes:
             )
 
 
+class Walls:
+    def __init__(self):
+        self.initial_y_pos = -64
+        self.speed = 350
+        # demarcation_line is the y position a wall must reach to activate the next wall
+        self.demarcation_line = 450
+
+
 class Game:
     def __init__(self):
         self.lanes = Lanes()
+        self.walls = Walls()
 
 
 class Settings:
