@@ -1,10 +1,8 @@
 import pygame
 
 from classes.lane_settings import LaneSettings
-from classes.wall_management import WallManagement
 from classes.place_marker import PlaceMarker
 from classes.player import Player
-from classes.single_brick import SingleBrick
 from classes.single_wall import SingleWall
 
 from settings import WINDOW_HEIGHT, WINDOW_WIDTH
@@ -22,7 +20,6 @@ player_sprites = pygame.sprite.Group()
 
 player_y_pos = 500
 
-wall_manager = WallManagement(display_surface)
 player = Player(player_sprites, pygame.math.Vector2(400, player_y_pos))
 
 running = True
@@ -57,10 +54,9 @@ while running:
 
     wall_a.update(dt)
     wall_b.update(dt)
+    player_sprites.update(dt, all_bricks)
 
     all_bricks.draw(display_surface)
-
-    player_sprites.update(dt, all_bricks)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
     
