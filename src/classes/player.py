@@ -1,6 +1,6 @@
 import pygame
 
-from classes.lane_settings import lane_settings
+from settings import settings
 
 # TODO LIST
 #
@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.max_speed = 600
         self.acceleration = 4000  # pixels per second squared
         self.deceleration_time = 0.2  # seconds to decelerate to target spot
-        self.player_spots = lane_settings.center_x_positions
+        self.player_spots = settings.game.lanes.center_x_positions
 
         # Target position for smooth snapping
         self.target_x = None

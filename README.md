@@ -60,9 +60,11 @@ deactivate
 
 ## Todos
 
-[ ] - make a singleton for all settings and do-away with the lane_settings implementation
 [ ] - wall_manager needs to emit a signal when the player passes a wall
 [ ] - player needs to be contained on the platform and bounce of the sides as needed
 
         - if speed over a certain threshold they go back to 0, 1, or 2 spaces etc. if a bounce is
           in effect it cannot be interrupted by input for the duration.
+
+[ ] - player positioning/wall creep (should get 3 chances before being knocked back into spider)
+[ ] - event observer pattern for wall to notify main that a player has gotten past it

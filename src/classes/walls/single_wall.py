@@ -1,6 +1,5 @@
 import pygame
 
-from classes.lane_settings import lane_settings
 from classes.walls.single_brick import SingleBrick
 from settings import settings
 
@@ -21,7 +20,7 @@ class SingleWall:
         self.shared_sprite_group = shared_sprite_group
         self.internal_sprite_group = pygame.sprite.Group()
 
-        self.lane_center_x_positions = lane_settings.center_x_positions
+        self.lane_center_x_positions = settings.game.lanes.center_x_positions
         self.speed = 300
         self.center_y_pos = wall_initial_y
 

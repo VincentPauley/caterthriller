@@ -1,5 +1,6 @@
 import pygame
 
+from classes.place_marker import PlaceMarker
 from classes.player import Player
 from classes.walls.index import WallManager
 from settings import settings
@@ -28,8 +29,8 @@ bg = pygame.image.load("src/graphics/background.png").convert()
 
 
 # show player spots (for debug)
-# for x_pos in lane_settings.center_x_positions:
-#     PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
+for x_pos in settings.game.lanes.center_x_positions:
+    PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
 
 while running:
     for event in pygame.event.get():
