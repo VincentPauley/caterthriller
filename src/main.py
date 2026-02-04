@@ -2,11 +2,11 @@ import pygame
 
 from classes.player import Player
 from classes.walls.index import WallManager
-from settings import WINDOW_HEIGHT, WINDOW_WIDTH
+from settings import settings
 
 pygame.init()
 display_surface = pygame.display.set_mode(
-    (WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SCALED, vsync=1
+    (settings.window.width, settings.window.height), pygame.SCALED, vsync=1
 )
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()

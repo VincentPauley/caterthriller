@@ -60,6 +60,7 @@ deactivate
 
 ## Todos
 
+[ ] - make a singleton for all settings and do-away with the lane_settings implementation
 [ ] - wall_manager needs to emit a signal when the player passes a wall
 [ ] - player needs to be contained on the platform and bounce of the sides as needed
 

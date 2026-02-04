@@ -1,4 +1,12 @@
-WINDOW_WIDTH = (
-    64 * 12
-)  # 768 // 10 tiles of 64, with one tile width of margin on each side
-WINDOW_HEIGHT = 32 * 24  # 768
+class Window:
+    def __init__(self):
+        self.width = 64 * 12
+        self.height = 32 * 24
+
+
+class Settings:
+    def __init__(self):
+        self.window = Window()
+
+
+settings = Settings()

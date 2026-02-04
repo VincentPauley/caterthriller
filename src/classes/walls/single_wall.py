@@ -2,7 +2,7 @@ import pygame
 
 from classes.lane_settings import lane_settings
 from classes.walls.single_brick import SingleBrick
-from settings import WINDOW_HEIGHT
+from settings import settings
 
 wall_initial_y = (
     -64
@@ -56,7 +56,7 @@ class SingleWall:
             self.demarcation_emitted = True
 
         # Check if wall has moved off screen
-        if self.center_y_pos > WINDOW_HEIGHT:
+        if self.center_y_pos > settings.window.height:
             self.active = False
             # Remove all sprites from ALL groups they belong to
             for sprite in self.internal_sprite_group:
