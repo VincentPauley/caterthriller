@@ -68,3 +68,5 @@ deactivate
 
 [ ] - player positioning/wall creep (should get 3 chances before being knocked back into spider)
 [ ] - event observer pattern for wall to notify main that a player has gotten past it
+[ ] - overhanging leaves at the top should move x slightly depending on player position, adds a layer
+of interest and gives player clearest view in the middle.

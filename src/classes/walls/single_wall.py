@@ -9,6 +9,7 @@ class SingleWall:
         self,
         shared_sprite_group: pygame.sprite.Group,
         active: bool,
+        player_bottom_y_pos: float,
         demarcation_callback,
     ):
         self.active = active
@@ -24,6 +25,9 @@ class SingleWall:
         self.demarcation_emitted = False
         self.demarcation_callback = demarcation_callback
 
+        self.pass_detected = False
+        self.player_bottom_y_pos = player_bottom_y_pos
+
         # sprite groups are passed in from the caller.
         self.reset_bricks()
 
@@ -32,6 +36,7 @@ class SingleWall:
         # more differentiation.  this creates a clean wall from scratch.
         self.center_y_pos = settings.game.walls.initial_y_pos
         self.demarcation_emitted = False
+        self.pass_detected = False
 
         for entry in enumerate(self.lane_center_x_positions):
             index = entry[0]  # < will be needed later to make some bricks missing
@@ -50,6 +55,12 @@ class SingleWall:
             self.demarcation_callback()
             self.demarcation_emitted = True
 
+        # check if wall has passed a player now
+
+        if self.center_y_pos - 64 > self.player_bottom_y_pos and not self.pass_detected:
+            self.pass_detected = True
+            print("Create an event for wall pass!")
+
         # Check if wall has moved off screen
         if self.center_y_pos > settings.window.height:
             self.active = False
@@ -60,5 +71,7 @@ class SingleWall:
             self.reset_bricks()
 
         else:
+            # check here for events about player position
+
             self.center_y_pos += self.speed * dt
             self.internal_sprite_group.update(self.center_y_pos)

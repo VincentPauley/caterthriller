@@ -1,24 +1,34 @@
 import pygame
+
 from classes.walls.single_wall import SingleWall
 
+
 class WallManager:
-    def __init__(self):
+    def __init__(self, player_bottom_y):
         self.all_brick_sprites = pygame.sprite.Group()
 
-        self.wall_a = SingleWall(self.all_brick_sprites, True, lambda: self.receive_wall_demarcation_hit("A"))
-        self.wall_b = SingleWall(self.all_brick_sprites, False, lambda: self.receive_wall_demarcation_hit("B"))
+        self.wall_a = SingleWall(
+            self.all_brick_sprites,
+            True,
+            player_bottom_y,
+            lambda: self.receive_wall_demarcation_hit("A"),
+        )
+        self.wall_b = SingleWall(
+            self.all_brick_sprites,
+            False,
+            player_bottom_y,
+            lambda: self.receive_wall_demarcation_hit("B"),
+        )
 
     def receive_wall_demarcation_hit(self, id):
-        if id == 'A':
+        if id == "A":
             self.wall_b.active = True
-        if id == 'B':
+        if id == "B":
             self.wall_a.active = True
-        
+
     def update(self, dt):
         self.wall_a.update(dt)
         self.wall_b.update(dt)
-
-
 
 
 # wall_a = SingleWall(all_bricks, True, lambda: receive_wall_demarcation_hit("A"))
@@ -29,6 +39,3 @@ class WallManager:
 #         wall_b.active = True
 #     if id == 'B':
 #         wall_a.active = True
-
-
-

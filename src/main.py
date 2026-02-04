@@ -12,16 +12,18 @@ display_surface = pygame.display.set_mode(
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
-wall_manager = WallManager()
-
-all_brick_sprites = wall_manager.all_brick_sprites
 
 place_markers = pygame.sprite.Group()
 player_sprites = pygame.sprite.Group()
 
 player_y_pos = 500
 
+# return the bottom of player so that the wall pass can tell when it has passed a player
 player = Player(player_sprites, pygame.math.Vector2(400, player_y_pos))
+
+wall_manager = WallManager(player.rect.bottom)
+
+all_brick_sprites = wall_manager.all_brick_sprites
 
 running = True
 
@@ -41,8 +43,14 @@ while running:
 
     display_surface.blit(bg, (0, 0))
 
-    wall_manager.update(dt)
+    wall_manager.update(dt)  # update needs to know what player's current position is in
+    # order to know if it was passed or not.
     player_sprites.update(dt, all_brick_sprites)
+
+    # ^ update of player can return the bottom position of the player
+    # or better yet... player stays constant and the background moves
+    # to indicate closer to edge.  no need for update every frame and
+    # player stays in the same y pos making things way easier.
 
     all_brick_sprites.draw(display_surface)
     player_sprites.draw(display_surface)
