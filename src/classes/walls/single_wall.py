@@ -62,6 +62,8 @@ class SingleWall:
         # check if wall has passed a player now
         if self.center_y_pos - 64 > self.player_bottom_y_pos and not self.pass_detected:
             self.pass_detected = True
+            # NOTE: should be able to tell if the wall was collided with or not
+            # by the number of sprites in the group during reset vs clearing.
             pygame.event.post(self.wall_clear_event)
 
         # Check if wall has moved off screen

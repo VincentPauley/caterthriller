@@ -35,6 +35,8 @@ bg = pygame.image.load("src/graphics/background.png").convert()
 #     PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
 
 
+font = pygame.font.SysFont("Arial", 15)
+
 walls_cleared = 0
 
 while running:
@@ -55,6 +57,10 @@ while running:
     all_brick_sprites.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
+
+    # show score temporarily
+    score_text = font.render(f"Walls Cleared: {walls_cleared}", True, (255, 255, 255))
+    display_surface.blit(score_text, (10, settings.window.height - 30))
 
     pygame.display.flip()
 
