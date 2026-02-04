@@ -1,8 +1,8 @@
 import pygame
 
-from classes.place_marker import PlaceMarker
 from classes.player import Player
 from classes.walls.index import WallManager
+from events import WALL_CLEARED
 from settings import settings
 
 pygame.init()
@@ -31,26 +31,26 @@ bg = pygame.image.load("src/graphics/background.png").convert()
 
 
 # show player spots (for debug)
-for x_pos in settings.game.lanes.center_x_positions:
-    PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
+# for x_pos in settings.game.lanes.center_x_positions:
+#     PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
+
+
+walls_cleared = 0
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == WALL_CLEARED:
+            walls_cleared += 1
+            print(f"Cleared Wall {walls_cleared}")
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
     display_surface.blit(bg, (0, 0))
 
-    wall_manager.update(dt)  # update needs to know what player's current position is in
-    # order to know if it was passed or not.
+    wall_manager.update(dt)
     player_sprites.update(dt, all_brick_sprites)
-
-    # ^ update of player can return the bottom position of the player
-    # or better yet... player stays constant and the background moves
-    # to indicate closer to edge.  no need for update every frame and
-    # player stays in the same y pos making things way easier.
 
     all_brick_sprites.draw(display_surface)
     player_sprites.draw(display_surface)

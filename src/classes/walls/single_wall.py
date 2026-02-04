@@ -1,6 +1,7 @@
 import pygame
 
 from classes.walls.single_brick import SingleBrick
+from events import WALL_CLEARED
 from settings import settings
 
 
@@ -16,6 +17,9 @@ class SingleWall:
         # sprite groups
         self.shared_sprite_group = shared_sprite_group
         self.internal_sprite_group = pygame.sprite.Group()
+        self.wall_clear_event = pygame.event.Event(
+            WALL_CLEARED, {}
+        )  # potentially track the number wall
 
         self.lane_center_x_positions = settings.game.lanes.center_x_positions
         self.speed = settings.game.walls.speed
@@ -56,10 +60,9 @@ class SingleWall:
             self.demarcation_emitted = True
 
         # check if wall has passed a player now
-
         if self.center_y_pos - 64 > self.player_bottom_y_pos and not self.pass_detected:
             self.pass_detected = True
-            print("Create an event for wall pass!")
+            pygame.event.post(self.wall_clear_event)
 
         # Check if wall has moved off screen
         if self.center_y_pos > settings.window.height:
