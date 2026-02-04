@@ -34,6 +34,12 @@ class Game:
     def __init__(self):
         self.lanes = Lanes()
         self.walls = Walls()
+        # allow 10 px overlap with the walls on each side
+        self.player_min_x = 64 + 10
+        self.player_max_x = (
+            self.lanes.single_lane_width * self.lanes.count
+            + self.lanes.single_lane_width
+        ) - 10
 
 
 class Settings:
