@@ -120,11 +120,10 @@ class Player(pygame.sprite.Sprite):
             
             self.apply_snap_deceleration(dt)
         
-    def update(self, dt, collision_groups):
+    def update(self, dt, bricks):
         self.input(dt)
         self.move(dt)
 
-        if len(collision_groups) > 0:
-            for brick in collision_groups.sprites():
-                if brick.rect.colliderect(self.rect):
-                    brick.kill()
+        for brick in bricks.sprites():
+            if brick.rect.colliderect(self.rect):
+                brick.kill()
