@@ -38,7 +38,20 @@ lane_settings = LaneSettings()
 all_bricks = pygame.sprite.Group()
 
 
-wall_a = SingleWall(all_bricks, True)
+
+wall_a = SingleWall(all_bricks, True, lambda: receive_wall_demarcation_hit("A"))
+wall_b = SingleWall(all_bricks, False, lambda: receive_wall_demarcation_hit("B"))
+
+def receive_wall_demarcation_hit(id):
+    print('demarc received: ', id)
+    if id == 'A':
+        wall_b.active = True
+    if id == 'B':
+        wall_a.active = True
+
+    
+
+    # print(f'demarc received from: {id}')
 
 # only 2 walls, wall A and wall B.
 # walls can handle reseting the sprites and their position
@@ -64,9 +77,9 @@ while running:
     display_surface.blit(bg, (0, 0))
 
     wall_a.update(dt)
+    wall_b.update(dt)
 
     all_bricks.draw(display_surface)
-
 
     player_sprites.update(dt, all_bricks)
     player_sprites.draw(display_surface)
