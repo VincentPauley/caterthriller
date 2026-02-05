@@ -11,7 +11,9 @@ class Lanes:
         self.single_lane_width = 64
         self.count = 10
         self.center_x_positions = []
+        self.x_positions = []
         self._get_lane_center_x_positions()
+        self._get_lane_x_positions()
 
     def _get_lane_center_x_positions(self):
         for i in range(self.count):
@@ -19,6 +21,12 @@ class Lanes:
                 i * self.single_lane_width
                 + self.single_lane_width
                 + self.single_lane_width / 2
+            )
+    def _get_lane_x_positions(self):
+        for i in range(self.count):
+            self.x_positions.append(
+                i * self.single_lane_width
+                + self.single_lane_width
             )
 
 
