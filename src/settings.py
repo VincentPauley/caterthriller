@@ -46,6 +46,7 @@ class Settings:
     def __init__(self):
         self.window = Window()
         self.game = Game()
+        self.debug_on = False
 
 
 settings = Settings()

@@ -1,5 +1,7 @@
 import pygame
 
+from classes.game_controller import game_controller
+from classes.place_marker import PlaceMarker
 from classes.player import Player
 from classes.walls.index import WallManager
 from events import WALL_CLEARED
@@ -29,23 +31,18 @@ running = True
 
 bg = pygame.image.load("src/graphics/background.png").convert()
 
-
-# show player spots (for debug)
-# for x_pos in settings.game.lanes.center_x_positions:
-#     PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
-
+if settings.debug_on:
+    for x_pos in settings.game.lanes.center_x_positions:
+        PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
 
 font = pygame.font.SysFont("Arial", 15)
-
-walls_cleared = 0
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == WALL_CLEARED:
-            walls_cleared += 1
-            print(f"Cleared Wall {walls_cleared}")
+            game_controller.increment_walls_cleared()
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
@@ -58,9 +55,12 @@ while running:
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
 
-    # show score temporarily
-    score_text = font.render(f"Walls Cleared: {walls_cleared}", True, (255, 255, 255))
-    display_surface.blit(score_text, (10, settings.window.height - 30))
+    # Debug Info
+    if settings.debug_on:
+        score_text = font.render(
+            f"Walls Cleared: {game_controller.walls_cleared}", True, (255, 255, 255)
+        )
+        display_surface.blit(score_text, (10, settings.window.height - 30))
 
     pygame.display.flip()
 

@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from classes.walls.single_brick import SingleBrick
@@ -17,9 +19,8 @@ class SingleWall:
         # sprite groups
         self.shared_sprite_group = shared_sprite_group
         self.internal_sprite_group = pygame.sprite.Group()
-        self.wall_clear_event = pygame.event.Event(
-            WALL_CLEARED, {}
-        )  # potentially track the number wall
+        # potentially track the number wall
+        self.wall_clear_event = pygame.event.Event(WALL_CLEARED, {})
 
         self.lane_center_x_positions = settings.game.lanes.center_x_positions
         self.speed = settings.game.walls.speed
@@ -35,7 +36,19 @@ class SingleWall:
         # sprite groups are passed in from the caller.
         self.reset_bricks()
 
+    def determine_empty_indexes(self):
+        empty_index = random.randrange(1, settings.game.lanes.count - 2)
+
+        if random.randint(0, 1) == 0:
+            return [empty_index, empty_index - 1]
+        else:
+            return [empty_index, empty_index + 1]
+
     def reset_bricks(self):
+        empty_indexes = self.determine_empty_indexes()
+        # NOTE: game controller provides wall clear count:
+        # print("Walls Cleared:", game_controller.walls_cleared)
+
         # each iteration the wall is re-built with new empties and potentially
         # more differentiation.  this creates a clean wall from scratch.
         self.center_y_pos = settings.game.walls.initial_y_pos
@@ -43,13 +56,14 @@ class SingleWall:
         self.pass_detected = False
 
         for entry in enumerate(self.lane_center_x_positions):
-            index = entry[0]  # < will be needed later to make some bricks missing
+            index = entry[0]
             x_pos = entry[1]
 
-            SingleBrick(
-                pygame.math.Vector2(x_pos, self.center_y_pos),
-                [self.shared_sprite_group, self.internal_sprite_group],
-            )
+            if index not in empty_indexes:
+                SingleBrick(
+                    pygame.math.Vector2(x_pos, self.center_y_pos),
+                    [self.shared_sprite_group, self.internal_sprite_group],
+                )
 
     def update(self, dt):
         if not self.active:

@@ -70,6 +70,7 @@ deactivate
 [ ] - event observer pattern for wall to notify main that a player has gotten past it
 [ ] - overhanging leaves at the top should move x slightly depending on player position, adds a layer
 of interest and gives player clearest view in the middle.
+[ ] - edit to have 9 lanes instead of 10 so that the player can start in center position.
 
 Block Removal Next:
 

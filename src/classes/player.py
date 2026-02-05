@@ -45,8 +45,7 @@ class Player(pygame.sprite.Sprite):
         # Apply velocity to position
         self.pos.x += self.velocity.x * dt
 
-        # print(f"pos.x {self.pos.x}")
-        # print(f"velocity.x {self.velocity.x}")
+        # keep player in bounds
         if self.pos.x < settings.game.player_min_x:
             self.pos.x = settings.game.player_min_x
         if self.pos.x > settings.game.player_max_x:
