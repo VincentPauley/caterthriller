@@ -37,6 +37,10 @@ if settings.debug_on:
 
 font = pygame.font.SysFont("Arial", 15)
 
+overlay = pygame.image.load("src/graphics/black-overlay.png").convert_alpha()
+
+overlay.set_alpha(128) # < 128 is 50%
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -61,6 +65,9 @@ while running:
     all_brick_sprites.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
+
+    if game_controller.game_paused:
+        display_surface.blit(overlay, (0,0))
 
     # Debug Info
     if settings.debug_on:
