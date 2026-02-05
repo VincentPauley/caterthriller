@@ -41,6 +41,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                game_controller.game_paused = True
+            if event.key == pygame.K_SPACE:
+                game_controller.game_paused = False
+
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
 
@@ -48,8 +54,9 @@ while running:
 
     display_surface.blit(bg, (0, 0))
 
-    wall_manager.update(dt)
-    player_sprites.update(dt, all_brick_sprites)
+    if not game_controller.game_paused:
+        wall_manager.update(dt)
+        player_sprites.update(dt, all_brick_sprites)
 
     all_brick_sprites.draw(display_surface)
     player_sprites.draw(display_surface)
