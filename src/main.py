@@ -22,9 +22,10 @@ place_markers = pygame.sprite.Group()
 player_sprites = pygame.sprite.Group()
 
 player_y_pos = 500
+player_x = settings.game.lanes.center_x_positions[4]
 
 # return the bottom of player so that the wall pass can tell when it has passed a player
-player = Player(player_sprites, pygame.math.Vector2(400, player_y_pos))
+player = Player(player_sprites, pygame.math.Vector2(player_x, player_y_pos))
 
 wall_manager = WallManager(player.rect.bottom)
 
@@ -32,7 +33,7 @@ all_brick_sprites = wall_manager.all_brick_sprites
 
 running = True
 
-bg = pygame.image.load("src/graphics/background.png").convert()
+bg = pygame.image.load("src/graphics/bg.png").convert()
 
 if settings.debug_on:
     for x_pos in settings.game.lanes.center_x_positions:
@@ -46,12 +47,7 @@ overlay.set_alpha(128) # < 128 is 50%
 
 water_sprites = pygame.sprite.Group()
 
-
-
-# print(settings.game.lanes.x_positions)
-
 for x in settings.game.lanes.x_positions:
-    # print(f"check x: {x}")
     water_sprite = WaterLane(pygame.math.Vector2(x, 0), water_sprites)
 
 while running:
@@ -69,7 +65,7 @@ while running:
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
-    display_surface.blit(bg, (0, 0))
+    display_surface.blit(bg, (64, 0))
 
     if not game_controller.game_paused:
         wall_manager.update(dt)

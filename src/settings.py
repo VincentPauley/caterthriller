@@ -1,7 +1,7 @@
 # Core: things needed for every game
 class Window:
     def __init__(self):
-        self.width = 64 * 12
+        self.width = 64 * 11
         self.height = 32 * 24
 
 
@@ -9,7 +9,7 @@ class Window:
 class Lanes:
     def __init__(self):
         self.single_lane_width = 64
-        self.count = 10
+        self.count = 9
         self.center_x_positions = []
         self.x_positions = []
         self._get_lane_center_x_positions()
