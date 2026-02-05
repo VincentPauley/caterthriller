@@ -75,8 +75,8 @@ of interest and gives player clearest view in the middle.
 Block Removal Next:
 
 - include phases based on how far along user is...
-- phase 1: 2 sequential blocks removed
-- phase 2: 2 blocks removed, sequential not guaranteed
-- phase 3: 1 block removed, max of 5 movement
-- phase 4: 1 block removed, max of 5 movement, speed increase
-- phase 5: 1 block removed, long biased movement, speed remains high
+  [X] - phase 1: 2 sequential blocks removed
+  [ ] - phase 2: 2 blocks removed, sequential not guaranteed
+  [ ] - phase 3: 1 block removed, max of 5 movement
+  [ ] - phase 4: 1 block removed, max of 5 movement, speed increase
+  [ ] - phase 5: 1 block removed, long biased movement, speed remains high

@@ -2,6 +2,7 @@ import random
 
 import pygame
 
+from classes.game_controller import game_controller
 from classes.walls.single_brick import SingleBrick
 from events import WALL_CLEARED
 from settings import settings
@@ -37,12 +38,31 @@ class SingleWall:
         self.reset_bricks()
 
     def determine_empty_indexes(self):
-        empty_index = random.randrange(1, settings.game.lanes.count - 2)
+        brick_phase = game_controller.get_brick_phase()
 
-        if random.randint(0, 1) == 0:
-            return [empty_index, empty_index - 1]
-        else:
-            return [empty_index, empty_index + 1]
+        if brick_phase == 1:
+            """two sequential blocks empty at random"""
+            empty_index = random.randrange(1, settings.game.lanes.count - 2)
+
+            if random.randint(0, 1) == 0:
+                return [empty_index, empty_index - 1]
+            else:
+                return [empty_index, empty_index + 1]
+
+        if brick_phase == 2:
+            """two non-sequential guaranteed blocks empty at random"""
+            empty_index = random.randrange(3, settings.game.lanes.count - 3)
+
+            if random.randint(0, 1) == 0:
+                return [
+                    empty_index,
+                    random.randrange(0, empty_index - 1),
+                ]
+            else:
+                return [
+                    empty_index,
+                    random.randrange(empty_index + 1, settings.game.lanes.count - 1),
+                ]
 
     def reset_bricks(self):
         empty_indexes = self.determine_empty_indexes()
