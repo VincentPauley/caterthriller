@@ -1,6 +1,16 @@
 import pygame
 
 from classes.game_controller import game_controller
+from settings import settings
+
+pygame.init()
+
+font = pygame.font.SysFont("Arial", 24)
+
+menu_title = font.render("Paused", True, (255, 255, 255))
+
+
+menu_title.get_rect(center=(settings.window.width // 2, 300))
 
 
 class PauseMenu:
@@ -41,6 +51,8 @@ class PauseMenu:
 
     def draw(self, surface):
         surface.blit(self.overlay_image, (0, 0))
+
+        surface.blit(menu_title, (300, 300))
 
     def resume(self):
         self.resume_requested = True

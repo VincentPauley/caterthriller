@@ -16,8 +16,6 @@ display_surface = pygame.display.set_mode(
 )
 
 
-pause_menu = PauseMenu()
-
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
@@ -45,6 +43,8 @@ if settings.debug_on:
 
 font = pygame.font.SysFont("Arial", 15)
 
+pause_menu = PauseMenu()
+
 smashes = pygame.sprite.Group()
 
 water_sprites = pygame.sprite.Group()
@@ -60,7 +60,8 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 game_controller.game_paused = True
             if event.key == pygame.K_SPACE:
-                pause_menu.resume()
+                if game_controller.game_paused:
+                    pause_menu.resume()
 
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
