@@ -87,6 +87,12 @@ class PauseMenu:
                 self.active_option_index = 0
                 self.option_resume.active = True
                 self.option_quit.active = False
+        if event == "enter":
+            if self.active_option_index == 0:
+                self.resume()
+            elif self.active_option_index == 1:
+                pygame.quit()
+                exit()
 
     def update(self, dt):
         if not self.overlay_completed:
