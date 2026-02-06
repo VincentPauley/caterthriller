@@ -82,9 +82,10 @@ while running:
 
     water_sprites.draw(display_surface)
     all_brick_sprites.draw(display_surface)
+    smashes.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
-    smashes.draw(display_surface)
+    
 
     if game_controller.game_paused:
         display_surface.blit(overlay, (0,0))
