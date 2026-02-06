@@ -1,18 +1,22 @@
 import pygame
 
 from classes.game_controller import game_controller
+from classes.menu.pause import PauseMenu
 from classes.place_marker import PlaceMarker
 from classes.player import Player
+from classes.smashed_brick import SmashedBrick
 from classes.walls.index import WallManager
 from classes.water_lane import WaterLane
-from classes.smashed_brick import SmashedBrick
-from events import WALL_CLEARED, BRICK_SMASHED
+from events import BRICK_SMASHED, WALL_CLEARED
 from settings import settings
 
 pygame.init()
 display_surface = pygame.display.set_mode(
     (settings.window.width, settings.window.height), pygame.SCALED, vsync=1
 )
+
+
+pause_menu = PauseMenu()
 
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
@@ -41,10 +45,6 @@ if settings.debug_on:
 
 font = pygame.font.SysFont("Arial", 15)
 
-overlay = pygame.image.load("src/graphics/black-overlay.png").convert_alpha()
-
-overlay.set_alpha(128) # < 128 is 50%
-
 smashes = pygame.sprite.Group()
 
 water_sprites = pygame.sprite.Group()
@@ -61,6 +61,7 @@ while running:
                 game_controller.game_paused = True
             if event.key == pygame.K_SPACE:
                 game_controller.game_paused = False
+                pause_menu.reset()
 
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
@@ -79,16 +80,16 @@ while running:
         water_sprites.update(dt)
         smashes.update(dt)
 
-
     water_sprites.draw(display_surface)
     all_brick_sprites.draw(display_surface)
     smashes.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
-    
 
+    # potentially put overlay in it's own class and do a fade in
     if game_controller.game_paused:
-        display_surface.blit(overlay, (0,0))
+        pause_menu.update(dt)
+        pause_menu.draw(display_surface)
 
     # Debug Info
     if settings.debug_on:
