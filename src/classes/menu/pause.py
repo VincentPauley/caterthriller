@@ -5,12 +5,20 @@ from settings import settings
 
 pygame.init()
 
+
+title_font = pygame.font.SysFont("Arial", 48)
 font = pygame.font.SysFont("Arial", 24)
 
-menu_title = font.render("Paused", True, (255, 255, 255))
+menu_title = title_font.render("Paused", True, (255, 255, 255))
 
 
 menu_title.get_rect(center=(settings.window.width // 2, 300))
+
+
+class Option:
+    def __init__(self, text, pos):
+        self.text = font.render(text, True, (255, 255, 255))
+        self.rect = self.text.get_rect(center=pos)
 
 
 class PauseMenu:
@@ -22,6 +30,14 @@ class PauseMenu:
         self.target_alpha = 170
         self.overlay_completed = False
         self.resume_requested = False
+
+        self.menu_title_rect = menu_title.get_rect(
+            center=(settings.window.width / 2, 250)
+        )
+
+        self.option_resume = Option("Resume", (settings.window.width / 2, 325))
+        self.option_quit = Option("Quit Game", (settings.window.width / 2, 400))
+
         self.reset()
 
     def reset(self):
@@ -52,7 +68,10 @@ class PauseMenu:
     def draw(self, surface):
         surface.blit(self.overlay_image, (0, 0))
 
-        surface.blit(menu_title, (300, 300))
+        surface.blit(menu_title, self.menu_title_rect)
+
+        surface.blit(self.option_resume.text, self.option_resume.rect)
+        surface.blit(self.option_quit.text, self.option_quit.rect)
 
     def resume(self):
         self.resume_requested = True
