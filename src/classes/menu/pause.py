@@ -17,8 +17,19 @@ menu_title.get_rect(center=(settings.window.width // 2, 300))
 
 class Option:
     def __init__(self, text, pos):
-        self.text = font.render(text, True, (255, 255, 255))
+        self.active = False
+        self.color = (255, 255, 255)
+        self.base_text = text
+        self.text = font.render(text, True, self.color)
         self.rect = self.text.get_rect(center=pos)
+
+    def update(self):
+        if self.active:
+            self.color = (255, 255, 255)
+        else:
+            self.color = (150, 150, 150)
+
+        self.text = font.render(self.base_text, True, self.color)
 
 
 class PauseMenu:
@@ -64,6 +75,10 @@ class PauseMenu:
             else:
                 self.reset()
                 game_controller.game_paused = False
+
+        # update menu options
+        self.option_resume.update()
+        self.option_quit.update()
 
     def draw(self, surface):
         surface.blit(self.overlay_image, (0, 0))
