@@ -1,13 +1,14 @@
 import pygame
 
-from settings import settings
 from events import BRICK_SMASHED
+from settings import settings
 
 # TODO LIST
 #
 # [ ] - dash mechanic (big swings are too much to reach now)
 # [ ] - edge needs to be handled. either insta kill or bounce player off the wall (prob later is more fun)
 # potential dash into wall causes a jump
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups, pos):
@@ -20,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.acceleration = 4000  # pixels per second squared
         self.deceleration_time = 0.2  # seconds to decelerate to target spot
         self.player_spots = settings.game.lanes.center_x_positions
+        self.highest_index_collision = -1
 
         # Target position for smooth snapping
         self.target_x = None
@@ -132,6 +134,16 @@ class Player(pygame.sprite.Sprite):
         self.move(dt)
 
         for brick in bricks.sprites():
-            if brick.rect.colliderect(self.rect):
-                pygame.event.post(pygame.event.Event(BRICK_SMASHED, { "pos": brick.rect.center }))
+            if (
+                brick.wall_index > self.highest_index_collision
+                and brick.rect.colliderect(self.rect)
+            ):
+                self.highest_index_collision = brick.wall_index
+                pygame.event.post(
+                    pygame.event.Event(BRICK_SMASHED, {"pos": brick.rect.center})
+                )
+
+                # TODO: create a brief timeout before user can move again
+                self.velocity = pygame.math.Vector2(0, 0)
+
                 brick.kill()

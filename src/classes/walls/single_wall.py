@@ -69,6 +69,10 @@ class SingleWall:
         # NOTE: game controller provides wall clear count:
         # print("Walls Cleared:", game_controller.walls_cleared)
 
+        # each wall should get an index and player should check for the index once
+        # a collision is made. then part of collision check should be to only allow
+        # for a collision with a higher index wall than the last wall collision's index
+
         # each iteration the wall is re-built with new empties and potentially
         # more differentiation.  this creates a clean wall from scratch.
         self.center_y_pos = settings.game.walls.initial_y_pos
@@ -83,6 +87,8 @@ class SingleWall:
                 SingleBrick(
                     pygame.math.Vector2(x_pos, self.center_y_pos),
                     [self.shared_sprite_group, self.internal_sprite_group],
+                    # self.walls_cleared
+                    game_controller.walls_cleared,
                 )
 
     def update(self, dt):

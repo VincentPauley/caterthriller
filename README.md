@@ -66,6 +66,11 @@ deactivate
           in effect it cannot be interrupted by input for the duration.
 
 [ ] - player positioning/wall creep (should get 3 chances before being knocked back into spider)
+
+- need to begin work on the "lives" aspect of the game... should only be able to collide
+  with one block on a wall. If there is a collision, freeze player for a moment to visibly
+  represent this and find a way to prevent further collisions with bricks.
+
 [ ] - overhanging leaves at the top should move x slightly depending on player position, adds a layer
 of interest and gives player clearest view in the middle.
 
