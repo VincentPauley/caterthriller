@@ -5,7 +5,8 @@ from classes.place_marker import PlaceMarker
 from classes.player import Player
 from classes.walls.index import WallManager
 from classes.water_lane import WaterLane
-from events import WALL_CLEARED
+from classes.smashed_brick import SmashedBrick
+from events import WALL_CLEARED, BRICK_SMASHED
 from settings import settings
 
 pygame.init()
@@ -13,7 +14,6 @@ display_surface = pygame.display.set_mode(
     (settings.window.width, settings.window.height), pygame.SCALED, vsync=1
 )
 
-print(settings.window.height)
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
@@ -45,6 +45,8 @@ overlay = pygame.image.load("src/graphics/black-overlay.png").convert_alpha()
 
 overlay.set_alpha(128) # < 128 is 50%
 
+smashes = pygame.sprite.Group()
+
 water_sprites = pygame.sprite.Group()
 
 for x in settings.game.lanes.x_positions:
@@ -62,6 +64,10 @@ while running:
 
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
+        if event.type == BRICK_SMASHED:
+            brick_pos = event.pos  # Access the position data
+            # Create smashed brick animation at that position
+            SmashedBrick(pygame.math.Vector2(brick_pos[0], brick_pos[1]), [smashes])
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
@@ -71,12 +77,14 @@ while running:
         wall_manager.update(dt)
         player_sprites.update(dt, all_brick_sprites)
         water_sprites.update(dt)
+        smashes.update(dt)
 
 
     water_sprites.draw(display_surface)
     all_brick_sprites.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
+    smashes.draw(display_surface)
 
     if game_controller.game_paused:
         display_surface.blit(overlay, (0,0))

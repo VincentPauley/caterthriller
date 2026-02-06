@@ -60,23 +60,20 @@ deactivate
 
 ## Todos
 
-[ ] - wall_manager needs to emit a signal when the player passes a wall
 [ ] - player needs to be contained on the platform and bounce of the sides as needed
 
         - if speed over a certain threshold they go back to 0, 1, or 2 spaces etc. if a bounce is
           in effect it cannot be interrupted by input for the duration.
 
 [ ] - player positioning/wall creep (should get 3 chances before being knocked back into spider)
-[ ] - event observer pattern for wall to notify main that a player has gotten past it
 [ ] - overhanging leaves at the top should move x slightly depending on player position, adds a layer
 of interest and gives player clearest view in the middle.
-[ ] - edit to have 9 lanes instead of 10 so that the player can start in center position.
 
 Block Removal Next:
 
 - include phases based on how far along user is...
   [X] - phase 1: 2 sequential blocks removed
-  [ ] - phase 2: 2 blocks removed, sequential not guaranteed
+  [X] - phase 2: 2 blocks removed, sequential not guaranteed
   [ ] - phase 3: 1 block removed, max of 5 movement
   [ ] - phase 4: 1 block removed, max of 5 movement, speed increase
   [ ] - phase 5: 1 block removed, long biased movement, speed remains high

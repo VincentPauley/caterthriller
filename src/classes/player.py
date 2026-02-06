@@ -1,13 +1,13 @@
 import pygame
 
 from settings import settings
+from events import BRICK_SMASHED
 
 # TODO LIST
 #
 # [ ] - dash mechanic (big swings are too much to reach now)
 # [ ] - edge needs to be handled. either insta kill or bounce player off the wall (prob later is more fun)
 # potential dash into wall causes a jump
-
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups, pos):
@@ -133,4 +133,5 @@ class Player(pygame.sprite.Sprite):
 
         for brick in bricks.sprites():
             if brick.rect.colliderect(self.rect):
+                pygame.event.post(pygame.event.Event(BRICK_SMASHED, { "pos": brick.rect.center }))
                 brick.kill()
