@@ -60,8 +60,7 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 game_controller.game_paused = True
             if event.key == pygame.K_SPACE:
-                game_controller.game_paused = False
-                pause_menu.reset()
+                pause_menu.resume()
 
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
