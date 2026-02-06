@@ -24,12 +24,13 @@ class Option:
         self.rect = self.text.get_rect(center=pos)
 
     def update(self):
+        # modify options basaed on active state
         if self.active:
             self.color = (255, 255, 255)
+            self.text = font.render(self.base_text + " *", True, self.color)
         else:
             self.color = (150, 150, 150)
-
-        self.text = font.render(self.base_text, True, self.color)
+            self.text = font.render(self.base_text, True, self.color)
 
 
 class PauseMenu:
@@ -49,6 +50,11 @@ class PauseMenu:
         self.option_resume = Option("Resume", (settings.window.width / 2, 325))
         self.option_quit = Option("Quit Game", (settings.window.width / 2, 400))
 
+        self.option_resume.active = True
+
+        self.options = [self.option_resume, self.option_quit]
+        self.active_option_index = 0
+
         self.reset()
 
     def reset(self):
@@ -59,6 +65,28 @@ class PauseMenu:
 
         # TODO: ^ reset should be private... Realistically the event loop will
         # call an action here and then this class will handle fadeout etc.
+
+    def handle_input(self, event):
+        # NOTE: this is inefficient and should be refactored for any number
+        # of potential menu inputs.
+        if event == "down":
+            if self.active_option_index == 0:
+                self.active_option_index = 1
+                self.option_resume.active = False
+                self.option_quit.active = True
+            elif self.active_option_index == 1:
+                self.active_option_index = 0
+                self.option_resume.active = True
+                self.option_quit.active = False
+        if event == "up":
+            if self.active_option_index == 0:
+                self.active_option_index = 1
+                self.option_resume.active = False
+                self.option_quit.active = True
+            elif self.active_option_index == 1:
+                self.active_option_index = 0
+                self.option_resume.active = True
+                self.option_quit.active = False
 
     def update(self, dt):
         if not self.overlay_completed:

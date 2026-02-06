@@ -62,6 +62,12 @@ while running:
             if event.key == pygame.K_SPACE:
                 if game_controller.game_paused:
                     pause_menu.resume()
+            if event.key == pygame.K_DOWN:
+                if game_controller.game_paused:
+                    pause_menu.handle_input("down")
+            if event.key == pygame.K_UP:
+                if game_controller.game_paused:
+                    pause_menu.handle_input("up")
 
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
