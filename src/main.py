@@ -75,7 +75,7 @@ while running:
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
         if event.type == BRICK_SMASHED:
-            brick_pos = event.pos  # Access the position data
+            brick_pos = event.pos
             # Create smashed brick animation at that position
             SmashedBrick(pygame.math.Vector2(brick_pos[0], brick_pos[1]), [smashes])
 
@@ -84,10 +84,13 @@ while running:
     display_surface.blit(bg, (64, 0))
 
     if not game_controller.game_paused:
+        # run core game features
+        # update
         wall_manager.update(dt)
         player_sprites.update(dt, all_brick_sprites)
         water_sprites.update(dt)
         smashes.update(dt)
+        # draw
 
     water_sprites.draw(display_surface)
     all_brick_sprites.draw(display_surface)
@@ -95,7 +98,6 @@ while running:
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
 
-    # potentially put overlay in it's own class and do a fade in
     if game_controller.game_paused:
         pause_menu.update(dt)
         pause_menu.draw(display_surface)

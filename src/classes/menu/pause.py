@@ -1,3 +1,5 @@
+import os
+
 import pygame
 
 from classes.game_controller import game_controller
@@ -5,13 +7,12 @@ from settings import settings
 
 pygame.init()
 
+font_path = os.path.join("src", "fonts", "Quintessential-Regular.ttf")
 
-title_font = pygame.font.SysFont("Arial", 48)
-font = pygame.font.SysFont("Arial", 24)
+title_font = pygame.font.Font(font_path, 48)
+font = pygame.font.Font(font_path, 24)
 
 menu_title = title_font.render("Paused", True, (255, 255, 255))
-
-
 menu_title.get_rect(center=(settings.window.width // 2, 300))
 
 
