@@ -6,6 +6,7 @@ from classes.place_marker import PlaceMarker
 from classes.player import Player
 from classes.smashed_brick import SmashedBrick
 from classes.walls.index import WallManager
+from classes.water_edge import WaterEdge
 from classes.water_lane import WaterLane
 from events import BRICK_SMASHED, WALL_CLEARED
 from settings import settings
@@ -41,6 +42,7 @@ if settings.debug_on:
     for x_pos in settings.game.lanes.center_x_positions:
         PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
 
+
 font = pygame.font.SysFont("Arial", 15)
 
 pause_menu = PauseMenu()
@@ -48,6 +50,9 @@ pause_menu = PauseMenu()
 smashes = pygame.sprite.Group()
 
 water_sprites = pygame.sprite.Group()
+
+
+water_left = WaterEdge(pygame.math.Vector2(0, 0), [water_sprites])
 
 for x in settings.game.lanes.x_positions:
     water_sprite = WaterLane(pygame.math.Vector2(x, 0), water_sprites)
