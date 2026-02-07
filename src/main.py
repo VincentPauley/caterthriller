@@ -51,8 +51,9 @@ smashes = pygame.sprite.Group()
 
 water_sprites = pygame.sprite.Group()
 
-
-water_left = WaterEdge(pygame.math.Vector2(0, 0), [water_sprites])
+# edges of the water
+WaterEdge(pygame.math.Vector2(0, 0), [water_sprites])
+WaterEdge(pygame.math.Vector2(576, 0), [water_sprites], True)
 
 for x in settings.game.lanes.x_positions:
     water_sprite = WaterLane(pygame.math.Vector2(x, 0), water_sprites)
