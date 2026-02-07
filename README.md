@@ -77,3 +77,4 @@ Block Removal Next:
   [ ] - phase 3: 1 block removed, max of 5 movement
   [ ] - phase 4: 1 block removed, max of 5 movement, speed increase
   [ ] - phase 5: 1 block removed, long biased movement, speed remains high
+  ... shifting back and forth blocks!
