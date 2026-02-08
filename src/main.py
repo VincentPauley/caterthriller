@@ -1,5 +1,6 @@
 import pygame
 
+from classes.dirt_patch import DirtPatch
 from classes.game_controller import game_controller
 from classes.menu.pause import PauseMenu
 from classes.place_marker import PlaceMarker
@@ -14,8 +15,6 @@ display_surface = pygame.display.set_mode(
     (settings.window.width, settings.window.height), pygame.SCALED, vsync=1
 )
 
-print(settings.window.width, settings.window.height)
-
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
 
@@ -25,6 +24,10 @@ player_sprites = pygame.sprite.Group()
 
 player_y_pos = 500
 player_x = settings.game.lanes.center_x_positions[4]
+
+dirt_patches = pygame.sprite.Group()
+
+DirtPatch(pygame.math.Vector2(300, 300), dirt_patches)
 
 # return the bottom of player so that the wall pass can tell when it has passed a player
 player = Player(player_sprites, pygame.math.Vector2(player_x, player_y_pos))
@@ -87,6 +90,7 @@ while running:
         # draw
 
     display_surface.blit(dirt_background, (0, 0))
+    dirt_patches.draw(display_surface)
     all_brick_sprites.draw(display_surface)
     smashes.draw(display_surface)
     player_sprites.draw(display_surface)
