@@ -5,7 +5,7 @@ class SingleBrick(pygame.sprite.Sprite):
     def __init__(self, pos, groups, wall_index):
         super().__init__(groups)
         self.pos = pos
-        self.image = pygame.image.load("src/graphics/rock-texture.png").convert_alpha()
+        self.image = pygame.image.load("src/graphics/rock-texture-v2.png").convert_alpha()
         self.rect = self.image.get_rect(center=self.pos)
         self.wall_index = wall_index
 

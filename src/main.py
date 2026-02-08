@@ -16,6 +16,7 @@ display_surface = pygame.display.set_mode(
     (settings.window.width, settings.window.height), pygame.SCALED, vsync=1
 )
 
+print(settings.window.width, settings.window.height)
 
 pygame.display.set_caption("Caterthriller")
 clock = pygame.time.Clock()
@@ -37,6 +38,8 @@ all_brick_sprites = wall_manager.all_brick_sprites
 running = True
 
 bg = pygame.image.load("src/graphics/bg.png").convert()
+
+dirt_background = pygame.image.load("src/graphics/dirt-bg-2.png").convert()
 
 if settings.debug_on:
     for x_pos in settings.game.lanes.center_x_positions:
@@ -101,10 +104,13 @@ while running:
         # draw
 
     water_sprites.draw(display_surface)
+    display_surface.blit(dirt_background, (0,0))
     all_brick_sprites.draw(display_surface)
     smashes.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
+
+    
 
     if game_controller.game_paused:
         pause_menu.update(dt)

@@ -31,7 +31,7 @@ class Lanes:
 class Walls:
     def __init__(self):
         self.initial_y_pos = -64
-        self.speed = 400
+        self.speed = 300
         # demarcation_line is the y position a wall must reach to activate the next wall
         self.demarcation_line = 450
 
