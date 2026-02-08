@@ -27,8 +27,6 @@ player_x = settings.game.lanes.center_x_positions[4]
 
 dirt_patches = pygame.sprite.Group()
 
-DirtPatch(pygame.math.Vector2(300, 300), dirt_patches)
-
 # return the bottom of player so that the wall pass can tell when it has passed a player
 player = Player(player_sprites, pygame.math.Vector2(player_x, player_y_pos))
 
@@ -74,6 +72,10 @@ while running:
 
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
+            DirtPatch(dirt_patches)
+            DirtPatch(dirt_patches)
+            DirtPatch(dirt_patches)
+            DirtPatch(dirt_patches)
         if event.type == BRICK_SMASHED:
             brick_pos = event.pos
             # Create smashed brick animation at that position
@@ -87,6 +89,7 @@ while running:
         wall_manager.update(dt)
         player_sprites.update(dt, all_brick_sprites)
         smashes.update(dt)
+        dirt_patches.update(dt)
         # draw
 
     display_surface.blit(dirt_background, (0, 0))

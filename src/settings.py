@@ -28,6 +28,11 @@ class Lanes:
             self.x_positions.append(i * self.single_lane_width + self.single_lane_width)
 
 
+class Ground:
+    def __init__(self):
+        self.speed = 300
+
+
 class Walls:
     def __init__(self):
         self.initial_y_pos = -64
@@ -39,6 +44,7 @@ class Walls:
 class Game:
     def __init__(self):
         self.lanes = Lanes()
+        self.ground = Ground()
         self.walls = Walls()
         # allow 10 px overlap with the walls on each side
         self.player_min_x = 64 + 10
