@@ -83,3 +83,9 @@ Block Removal Next:
   [ ] - phase 4: 1 block removed, max of 5 movement, speed increase
   [ ] - phase 5: 1 block removed, long biased movement, speed remains high
   ... shifting back and forth blocks!
+
+Block Texture re-work:
+
+- too crisp, it's moving too fast to show hard lines
+- too many little blocks
+- too strong of a line on the right

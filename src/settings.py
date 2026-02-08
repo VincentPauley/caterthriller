@@ -22,18 +22,16 @@ class Lanes:
                 + self.single_lane_width
                 + self.single_lane_width / 2
             )
+
     def _get_lane_x_positions(self):
         for i in range(self.count):
-            self.x_positions.append(
-                i * self.single_lane_width
-                + self.single_lane_width
-            )
+            self.x_positions.append(i * self.single_lane_width + self.single_lane_width)
 
 
 class Walls:
     def __init__(self):
         self.initial_y_pos = -64
-        self.speed = 450
+        self.speed = 400
         # demarcation_line is the y position a wall must reach to activate the next wall
         self.demarcation_line = 450
 
