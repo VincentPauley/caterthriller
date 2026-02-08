@@ -6,8 +6,6 @@ from classes.place_marker import PlaceMarker
 from classes.player import Player
 from classes.smashed_brick import SmashedBrick
 from classes.walls.index import WallManager
-from classes.water_edge import WaterEdge
-from classes.water_lane import WaterLane
 from events import BRICK_SMASHED, WALL_CLEARED
 from settings import settings
 
@@ -37,8 +35,6 @@ all_brick_sprites = wall_manager.all_brick_sprites
 
 running = True
 
-bg = pygame.image.load("src/graphics/bg.png").convert()
-
 dirt_background = pygame.image.load("src/graphics/dirt-bg-2.png").convert()
 
 if settings.debug_on:
@@ -51,16 +47,6 @@ font = pygame.font.SysFont("Arial", 15)
 pause_menu = PauseMenu()
 
 smashes = pygame.sprite.Group()
-
-water_sprites = pygame.sprite.Group()
-
-# edges of the water
-WaterEdge(pygame.math.Vector2(0, 0), [water_sprites])
-WaterEdge(pygame.math.Vector2(576, 0), [water_sprites], True)
-
-for i, lx in enumerate(settings.game.lanes.x_positions):
-    if i > 0 and i < len(settings.game.lanes.x_positions) - 1:
-        WaterLane(pygame.math.Vector2(lx, 0), water_sprites)
 
 
 while running:
@@ -92,25 +78,19 @@ while running:
 
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
-    display_surface.blit(bg, (64, 0))
-
     if not game_controller.game_paused:
         # run core game features
         # update
         wall_manager.update(dt)
         player_sprites.update(dt, all_brick_sprites)
-        water_sprites.update(dt)
         smashes.update(dt)
         # draw
 
-    water_sprites.draw(display_surface)
-    display_surface.blit(dirt_background, (0,0))
+    display_surface.blit(dirt_background, (0, 0))
     all_brick_sprites.draw(display_surface)
     smashes.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
-
-    
 
     if game_controller.game_paused:
         pause_menu.update(dt)
