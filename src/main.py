@@ -36,7 +36,7 @@ all_brick_sprites = wall_manager.all_brick_sprites
 
 running = True
 
-dirt_background = pygame.image.load("src/graphics/dirt-bg-2.png").convert()
+dirt_background = pygame.image.load("src/graphics/bg-gradient.png").convert()
 
 if settings.debug_on:
     for x_pos in settings.game.lanes.center_x_positions:
