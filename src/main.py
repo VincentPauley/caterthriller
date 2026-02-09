@@ -50,6 +50,15 @@ pause_menu = PauseMenu()
 smashes = pygame.sprite.Group()
 
 
+def spawn_dirt_patches():
+    DirtPatch(dirt_patches)
+    DirtPatch(dirt_patches)
+    DirtPatch(dirt_patches)
+    DirtPatch(dirt_patches)
+
+
+spawn_dirt_patches()
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -72,10 +81,7 @@ while running:
 
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
-            DirtPatch(dirt_patches)
-            DirtPatch(dirt_patches)
-            DirtPatch(dirt_patches)
-            DirtPatch(dirt_patches)
+            spawn_dirt_patches()
         if event.type == BRICK_SMASHED:
             brick_pos = event.pos
             # Create smashed brick animation at that position

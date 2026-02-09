@@ -5,8 +5,6 @@ import pygame
 from settings import settings
 
 
-# can't think of a situation where the position of this would need to be placed
-# specifically, I think it can just handle it's own spawn
 class DirtPatch(pygame.sprite.Sprite):
     def __init__(self, groups):
         super().__init__(groups)
@@ -30,3 +28,6 @@ class DirtPatch(pygame.sprite.Sprite):
     def update(self, dt):
         self.pos.y += settings.game.ground.speed * dt
         self.rect.y = int(self.pos.y)
+
+        if self.pos.y > settings.window.height:
+            self.kill()
