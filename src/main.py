@@ -1,6 +1,6 @@
 import pygame
 
-from classes.dirt_patch import DirtPatch
+from classes.background_element import BackgroundElement
 from classes.game_controller import game_controller
 from classes.menu.pause import PauseMenu
 from classes.place_marker import PlaceMarker
@@ -24,6 +24,8 @@ player_sprites = pygame.sprite.Group()
 
 player_y_pos = 500
 player_x = settings.game.lanes.center_x_positions[4]
+
+background_elements = pygame.sprite.Group()
 
 dirt_patches = pygame.sprite.Group()
 
@@ -50,14 +52,18 @@ pause_menu = PauseMenu()
 smashes = pygame.sprite.Group()
 
 
-def spawn_dirt_patches():
-    DirtPatch(dirt_patches)
-    DirtPatch(dirt_patches)
-    DirtPatch(dirt_patches)
-    DirtPatch(dirt_patches)
+def spawn_background_elements():
+    BackgroundElement("src/graphics/dirt-effect-texture.png", background_elements)
+    BackgroundElement("src/graphics/dirt-effect-texture.png", background_elements)
+    BackgroundElement("src/graphics/dirt-effect-texture.png", background_elements)
+    BackgroundElement("src/graphics/dirt-effect-texture.png", background_elements)
+    BackgroundElement("src/graphics/rock-cluster.png", background_elements)
+    BackgroundElement("src/graphics/rock-cluster.png", background_elements)
+
+    BackgroundElement("src/graphics/dirt-stain-light.png", background_elements)
 
 
-spawn_dirt_patches()
+spawn_background_elements()
 
 while running:
     for event in pygame.event.get():
@@ -81,7 +87,8 @@ while running:
 
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
-            spawn_dirt_patches()
+            spawn_background_elements()
+
         if event.type == BRICK_SMASHED:
             brick_pos = event.pos
             # Create smashed brick animation at that position
@@ -90,16 +97,15 @@ while running:
     dt = clock.tick(60) / 1000  # limits to 60 FPS and provides dt
 
     if not game_controller.game_paused:
-        # run core game features
         # update
         wall_manager.update(dt)
         player_sprites.update(dt, all_brick_sprites)
         smashes.update(dt)
-        dirt_patches.update(dt)
-        # draw
+        background_elements.update(dt)
 
+    # draw
     display_surface.blit(dirt_background, (0, 0))
-    dirt_patches.draw(display_surface)
+    background_elements.draw(display_surface)
     all_brick_sprites.draw(display_surface)
     smashes.draw(display_surface)
     player_sprites.draw(display_surface)

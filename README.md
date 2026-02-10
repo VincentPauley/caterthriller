@@ -74,6 +74,9 @@ deactivate
 [ ] - overhanging leaves at the top should move x slightly depending on player position, adds a layer
 of interest and gives player clearest view in the middle.
 
+[ ] - instead of timed rounds make "coins" or something to collect, if you collect 3 without
+being hit you can hit the spider and move up or gain an extra life to keep going.
+
 Block Removal Next:
 
 - include phases based on how far along user is...
