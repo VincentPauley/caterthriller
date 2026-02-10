@@ -24,12 +24,11 @@ class SpiderHead(pygame.sprite.Sprite):
             KILL_POINT,
         ]
 
-        self.image = pygame.image.load("src/graphics/fish.png").convert_alpha()
+        self.image = pygame.image.load("src/graphics/spider-head.png").convert_alpha()
+        self.image = pygame.transform.rotate(self.image, 180)
         self.rect = self.image.get_rect(
             center=(settings.window.width / 2, self.head_positions[0])
         )
 
     def update(self, dt):
-        # print(settings.game.current_player_hits)
-
         self.rect.centery = self.head_positions[game_controller.current_player_hits]

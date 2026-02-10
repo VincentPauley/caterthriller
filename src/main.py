@@ -66,9 +66,8 @@ smashes = pygame.sprite.Group()
 def spawn_background_elements():
     for i in range(4):
         BackgroundElement(BackgroundImages.DIRT_EFFECT.value, background_elements)
-    for i in range(2):
-        BackgroundElement(BackgroundImages.ROCK_CLUSTER.value, background_elements)
-    BackgroundElement(BackgroundImages.DIRT_STAIN.value, background_elements)
+    BackgroundElement(BackgroundImages.ROCK_CLUSTER.value, background_elements)
+    # BackgroundElement(BackgroundImages.DIRT_STAIN.value, background_elements)
 
 
 spider_elements = pygame.sprite.Group()
