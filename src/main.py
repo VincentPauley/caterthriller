@@ -1,4 +1,5 @@
 from enum import Enum
+import random
 
 import pygame
 
@@ -10,6 +11,7 @@ from classes.player import Player
 from classes.smashed_brick import SmashedBrick
 from classes.spider_head import SpiderHead
 from classes.walls.index import WallManager
+from classes.coin import Coin
 from events import BRICK_SMASHED, WALL_CLEARED
 from settings import settings
 
@@ -24,10 +26,13 @@ clock = pygame.time.Clock()
 
 place_markers = pygame.sprite.Group()
 player_sprites = pygame.sprite.Group()
+coins = pygame.sprite.Group()
 
 player_x = settings.game.lanes.center_x_positions[4]
 
 background_elements = pygame.sprite.Group()
+
+
 
 
 class BackgroundImages(Enum):
@@ -99,6 +104,7 @@ while running:
         if event.type == WALL_CLEARED:
             game_controller.increment_walls_cleared()
             spawn_background_elements()
+            Coin((random.randrange(100, 600),-150), coins)
 
         if event.type == BRICK_SMASHED:
             brick_pos = event.pos
@@ -115,6 +121,7 @@ while running:
         smashes.update(dt)
         background_elements.update(dt)
         spider_elements.update(dt)
+        coins.update(dt)
 
     # draw
     display_surface.blit(dirt_background, (0, 0))
@@ -124,6 +131,7 @@ while running:
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
     spider_elements.draw(display_surface)
+    coins.draw(display_surface)
 
     if game_controller.game_paused:
         pause_menu.update(dt)
