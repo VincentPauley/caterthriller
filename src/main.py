@@ -8,6 +8,7 @@ from classes.menu.pause import PauseMenu
 from classes.place_marker import PlaceMarker
 from classes.player import Player
 from classes.smashed_brick import SmashedBrick
+from classes.spider_head import SpiderHead
 from classes.walls.index import WallManager
 from events import BRICK_SMASHED, WALL_CLEARED
 from settings import settings
@@ -24,7 +25,6 @@ clock = pygame.time.Clock()
 place_markers = pygame.sprite.Group()
 player_sprites = pygame.sprite.Group()
 
-player_y_pos = 500
 player_x = settings.game.lanes.center_x_positions[4]
 
 background_elements = pygame.sprite.Group()
@@ -37,7 +37,9 @@ class BackgroundImages(Enum):
 
 
 # return the bottom of player so that the wall pass can tell when it has passed a player
-player = Player(player_sprites, pygame.math.Vector2(player_x, player_y_pos))
+player = Player(
+    player_sprites, pygame.math.Vector2(player_x, settings.game.player_y_pos)
+)
 
 wall_manager = WallManager(player.rect.bottom)
 
@@ -49,7 +51,9 @@ dirt_background = pygame.image.load("src/graphics/bg-gradient.png").convert()
 
 if settings.debug_on:
     for x_pos in settings.game.lanes.center_x_positions:
-        PlaceMarker(pygame.math.Vector2(x_pos, player_y_pos), place_markers)
+        PlaceMarker(
+            pygame.math.Vector2(x_pos, settings.game.player_y_pos), place_markers
+        )
 
 
 font = pygame.font.SysFont("Arial", 15)
@@ -66,6 +70,10 @@ def spawn_background_elements():
         BackgroundElement(BackgroundImages.ROCK_CLUSTER.value, background_elements)
     BackgroundElement(BackgroundImages.DIRT_STAIN.value, background_elements)
 
+
+spider_elements = pygame.sprite.Group()
+
+SpiderHead(spider_elements)
 
 spawn_background_elements()
 
@@ -114,6 +122,7 @@ while running:
     smashes.draw(display_surface)
     player_sprites.draw(display_surface)
     place_markers.draw(display_surface)
+    spider_elements.draw(display_surface)
 
     if game_controller.game_paused:
         pause_menu.update(dt)

@@ -52,6 +52,7 @@ class Game:
             self.lanes.single_lane_width * self.lanes.count
             + self.lanes.single_lane_width
         ) - 10
+        self.player_y_pos = 500
 
 
 class Settings:
