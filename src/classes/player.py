@@ -129,9 +129,14 @@ class Player(pygame.sprite.Sprite):
 
             self.apply_snap_deceleration(dt)
 
-    def update(self, dt, bricks):
+    def update(self, dt, bricks, coins):
         self.input(dt)
         self.move(dt)
+ 
+        for coin in coins.sprites():
+
+            if coin.rect.colliderect(self.rect):
+                coin.handle_player_collect()
 
         for brick in bricks.sprites():
             if (

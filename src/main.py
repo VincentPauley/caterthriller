@@ -117,7 +117,7 @@ while running:
     if not game_controller.game_paused:
         # update
         wall_manager.update(dt)
-        player_sprites.update(dt, all_brick_sprites)
+        player_sprites.update(dt, all_brick_sprites, coins)
         smashes.update(dt)
         background_elements.update(dt)
         spider_elements.update(dt)

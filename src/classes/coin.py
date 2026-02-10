@@ -16,9 +16,19 @@ class Coin(pygame.sprite.Sprite):
         self.image = self.frames[1]
         self.rect = self.image.get_rect(center=self.pos)
 
+        self.collected = False
+
     def move(self, dt):
         self.pos.y += settings.game.ground.speed * dt
         self.rect.y = int(self.pos.y)
+
+    def handle_player_collect(self):
+        if not self.collected:
+            self.collected = True
+            print('Player Collected me, a COIN!')
+             # event needs to be published globally that
+                # the player has collected a coin.
+            self.kill()
     
     def update(self, dt):
         self.move(dt)
@@ -28,3 +38,7 @@ class Coin(pygame.sprite.Sprite):
             self.frame_index = 0
         
         self.image = self.frames[int(self.frame_index)]
+
+        # remove once off frame
+        if self.rect.top > settings.window.height:
+            self.kill()
