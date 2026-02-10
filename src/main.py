@@ -1,3 +1,5 @@
+from enum import Enum
+
 import pygame
 
 from classes.background_element import BackgroundElement
@@ -27,7 +29,12 @@ player_x = settings.game.lanes.center_x_positions[4]
 
 background_elements = pygame.sprite.Group()
 
-dirt_patches = pygame.sprite.Group()
+
+class BackgroundImages(Enum):
+    DIRT_EFFECT = "src/graphics/dirt-effect-texture.png"
+    ROCK_CLUSTER = "src/graphics/rock-cluster.png"
+    DIRT_STAIN = "src/graphics/dirt-stain-light.png"
+
 
 # return the bottom of player so that the wall pass can tell when it has passed a player
 player = Player(player_sprites, pygame.math.Vector2(player_x, player_y_pos))
@@ -53,14 +60,11 @@ smashes = pygame.sprite.Group()
 
 
 def spawn_background_elements():
-    BackgroundElement("src/graphics/dirt-effect-texture.png", background_elements)
-    BackgroundElement("src/graphics/dirt-effect-texture.png", background_elements)
-    BackgroundElement("src/graphics/dirt-effect-texture.png", background_elements)
-    BackgroundElement("src/graphics/dirt-effect-texture.png", background_elements)
-    BackgroundElement("src/graphics/rock-cluster.png", background_elements)
-    BackgroundElement("src/graphics/rock-cluster.png", background_elements)
-
-    BackgroundElement("src/graphics/dirt-stain-light.png", background_elements)
+    for i in range(4):
+        BackgroundElement(BackgroundImages.DIRT_EFFECT.value, background_elements)
+    for i in range(2):
+        BackgroundElement(BackgroundImages.ROCK_CLUSTER.value, background_elements)
+    BackgroundElement(BackgroundImages.DIRT_STAIN.value, background_elements)
 
 
 spawn_background_elements()
