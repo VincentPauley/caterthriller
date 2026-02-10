@@ -2,6 +2,7 @@ class GameController:
     def __init__(self):
         self.walls_cleared = 0
         self.game_paused = False
+        self.current_player_hits = 0
 
     def increment_walls_cleared(self):
         self.walls_cleared += 1

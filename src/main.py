@@ -103,6 +103,7 @@ while running:
 
         if event.type == BRICK_SMASHED:
             brick_pos = event.pos
+            game_controller.current_player_hits += 1
             # Create smashed brick animation at that position
             SmashedBrick(pygame.math.Vector2(brick_pos[0], brick_pos[1]), [smashes])
 
@@ -114,6 +115,7 @@ while running:
         player_sprites.update(dt, all_brick_sprites)
         smashes.update(dt)
         background_elements.update(dt)
+        spider_elements.update(dt)
 
     # draw
     display_surface.blit(dirt_background, (0, 0))
