@@ -32,3 +32,7 @@ class SpiderHead(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.rect.centery = self.head_positions[game_controller.current_player_hits]
+
+        if game_controller.current_player_hits >= len(self.head_positions) -1:
+            print("!!! GAME OVER !!!")
+            pygame.quit()

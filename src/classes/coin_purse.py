@@ -50,6 +50,7 @@ class CoinPurse():
                 self.delayed_action()
                 self.delay_timer = None  # Reset timer
         
+        # TODO: clean this slop up, use a loop instead of individual references
         if game_controller.current_player_coins == 3 and self.last_known != 3:
             self.coin_3.active = True
             self.coin_2.active = True
