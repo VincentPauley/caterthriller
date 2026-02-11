@@ -11,6 +11,7 @@ from classes.player import Player
 from classes.smashed_brick import SmashedBrick
 from classes.spider_head import SpiderHead
 from classes.walls.index import WallManager
+from classes.coin_purse import CoinPurse
 from classes.coin import Coin
 from events import BRICK_SMASHED, WALL_CLEARED
 from settings import settings
@@ -45,6 +46,8 @@ class BackgroundImages(Enum):
 player = Player(
     player_sprites, pygame.math.Vector2(player_x, settings.game.player_y_pos)
 )
+
+coin_purse = CoinPurse()
 
 wall_manager = WallManager(player.rect.bottom)
 
@@ -122,6 +125,7 @@ while running:
         background_elements.update(dt)
         spider_elements.update(dt)
         coins.update(dt)
+        coin_purse.update(dt)
 
     # draw
     display_surface.blit(dirt_background, (0, 0))
@@ -132,6 +136,7 @@ while running:
     place_markers.draw(display_surface)
     spider_elements.draw(display_surface)
     coins.draw(display_surface)
+    coin_purse.draw(display_surface)
 
     if game_controller.game_paused:
         pause_menu.update(dt)

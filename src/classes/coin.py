@@ -1,5 +1,8 @@
 import pygame
 from settings import settings
+from classes.game_controller import game_controller
+
+sound_effect = pygame.mixer.Sound("src/sounds/coin_pickup.wav")
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
@@ -25,9 +28,8 @@ class Coin(pygame.sprite.Sprite):
     def handle_player_collect(self):
         if not self.collected:
             self.collected = True
-            print('Player Collected me, a COIN!')
-             # event needs to be published globally that
-                # the player has collected a coin.
+            game_controller.current_player_coins += 1
+            sound_effect.play()
             self.kill()
     
     def update(self, dt):

@@ -92,3 +92,8 @@ Block Texture re-work:
 - too crisp, it's moving too fast to show hard lines
 - too many little blocks
 - too strong of a line on the right
+
+
+Menu FX 03 (descending).wav by Nightflame -- https://freesound.org/s/422515/ -- License: Creative Commons 0
+
+Cartoon Jump.wav by farzyno -- https://freesound.org/s/661297/ -- License: Creative Commons 0
